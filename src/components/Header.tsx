@@ -83,10 +83,14 @@ const Header = () => {
               </>
             ) : (
               <>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/auth">Sign In</Link>
-                </Button>
-                <Button variant="hero" size="default">
+                <Link to="/auth">
+                  <Button variant="ghost" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Button variant="hero" size="default" onClick={() => {
+                  document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                }}>
                   Join Waitlist
                 </Button>
               </>
@@ -151,10 +155,15 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <Button variant="ghost" className="justify-start" asChild>
-                      <Link to="/auth">Sign In</Link>
-                    </Button>
-                    <Button variant="hero">
+                    <Link to="/auth">
+                      <Button variant="ghost" className="justify-start w-full">
+                        Sign In
+                      </Button>
+                    </Link>
+                    <Button variant="hero" onClick={() => {
+                      setIsMenuOpen(false);
+                      document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
+                    }}>
                       Join Waitlist
                     </Button>
                   </>
