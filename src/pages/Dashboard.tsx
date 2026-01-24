@@ -1,7 +1,6 @@
 import { useAuth } from '@/hooks/useAuth';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import DashboardModules from '@/components/dashboard/DashboardModules';
-import ScrollReveal from '@/components/ScrollReveal';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -9,24 +8,26 @@ const Dashboard = () => {
   const displayName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there';
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50">
       <DashboardHeader />
       
-      <main className="container-wide px-6 py-8 md:py-12">
-        <ScrollReveal>
-          <div className="mb-10">
-            <h1 className="text-3xl md:text-4xl font-display text-foreground mb-2">
-              Welcome, {displayName}
-            </h1>
-            <p className="text-muted-foreground">
-              Your workation command center. Explore tools, manage bookings, and discover your destination.
-            </p>
+      <main className="container max-w-7xl mx-auto px-6 py-10 md:py-14">
+        {/* Welcome Section */}
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-white/50 shadow-lg mb-6">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-sm font-medium text-gray-700">Your workation command center</span>
           </div>
-        </ScrollReveal>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-gray-900 mb-4">
+            Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">{displayName}</span>
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Manage your stays, discover experiences, and optimize your remote work environment
+          </p>
+        </div>
 
-        <ScrollReveal delay={0.1}>
-          <DashboardModules />
-        </ScrollReveal>
+        {/* Modules */}
+        <DashboardModules />
       </main>
     </div>
   );
