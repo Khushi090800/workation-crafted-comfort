@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      waitlist: {
+        Row: {
+          created_at: string
+          destination: string | null
+          email: string
+          full_name: string
+          id: string
+          mailchimp_synced: boolean | null
+          source: string | null
+          wants_updates: boolean | null
+        }
+        Insert: {
+          created_at?: string
+          destination?: string | null
+          email: string
+          full_name: string
+          id?: string
+          mailchimp_synced?: boolean | null
+          source?: string | null
+          wants_updates?: boolean | null
+        }
+        Update: {
+          created_at?: string
+          destination?: string | null
+          email?: string
+          full_name?: string
+          id?: string
+          mailchimp_synced?: boolean | null
+          source?: string | null
+          wants_updates?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
