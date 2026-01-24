@@ -2,21 +2,70 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowRight, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { z } from "zod";
 import ScrollReveal from "./ScrollReveal";
+
+const WEBHOOK_URL = "https://farhandifedrizal.app.n8n.cloud/webhook/waitlist-signup";
+
+const waitlistSchema = z.object({
+  fullName: z.string().trim().min(1, "Name is required").max(100, "Name too long"),
+  email: z.string().trim().email("Invalid email").max(255, "Email too long"),
+  wantsUpdates: z.boolean(),
+});
 
 const FinalWaitlistSection = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [wantsUpdates, setWantsUpdates] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && fullName) {
+    
+    // Validate inputs
+    const result = waitlistSchema.safeParse({
+      fullName,
+      email,
+      wantsUpdates,
+    });
+
+    if (!result.success) {
+      toast.error(result.error.errors[0].message);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify({
+          fullName: result.data.fullName,
+          email: result.data.email,
+          destination: "global",
+          wantsUpdates: result.data.wantsUpdates,
+          source: "global-waitlist",
+          timestamp: new Date().toISOString(),
+        }),
+      });
+
       setSubmitted(true);
+      toast.success("You're on the list!", {
+        description: "We'll notify you as we expand to new destinations.",
+      });
       setFullName("");
       setEmail("");
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -85,9 +134,19 @@ const FinalWaitlistSection = () => {
                   variant="hero"
                   size="xl"
                   className="w-full group"
+                  disabled={isLoading}
                 >
-                  Join the Waitlist
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Joining...
+                    </>
+                  ) : (
+                    <>
+                      Join the Waitlist
+                      <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    </>
+                  )}
                 </Button>
 
                 <p className="text-xs text-center text-muted-foreground">
