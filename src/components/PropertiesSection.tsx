@@ -1,4 +1,5 @@
 import PropertyCard from "./PropertyCard";
+import ScrollReveal from "./ScrollReveal";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -38,31 +39,29 @@ const properties = [
 
 const PropertiesSection = () => {
   return (
-    <section id="properties" className="section-padding bg-background">
-      <div className="container-wide">
+    <section id="properties" className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-background">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-4 block">
-            Featured Properties
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">
-            Work-Ready Stays in Lombok
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Every property is vetted for productivity. High-speed WiFi, ergonomic setups, and quiet workspaces — guaranteed.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+              Featured Properties
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+              Work-Ready Stays in Lombok
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Every property is vetted for productivity. High-speed WiFi, ergonomic setups, and quiet workspaces — guaranteed.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Properties Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {properties.map((property, index) => (
-            <div
-              key={property.title}
-              className="animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+            <ScrollReveal key={property.title} delay={index * 0.1}>
               <PropertyCard {...property} />
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

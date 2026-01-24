@@ -1,4 +1,5 @@
 import { Star, Quote } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const testimonials = [
   {
@@ -35,73 +36,75 @@ const companies = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="section-padding bg-background">
-      <div className="container-wide">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-4 block">
-            Testimonials
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">
-            Trusted by remote professionals
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Join hundreds of remote workers who've found their perfect work-life balance.
-          </p>
-        </div>
+    <section className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-background">
+      <div className="max-w-6xl mx-auto">
+        <ScrollReveal>
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+              Testimonials
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+              Trusted by remote professionals
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Join hundreds of remote workers who've found their perfect work-life balance.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-5 mb-10">
           {testimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.name}
-              className="bg-card rounded-3xl p-8 shadow-soft card-hover animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Rating */}
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                ))}
-              </div>
-
-              {/* Quote */}
-              <div className="relative mb-6">
-                <Quote className="absolute -top-2 -left-1 w-8 h-8 text-muted/50" />
-                <p className="text-foreground leading-relaxed pl-6">
-                  {testimonial.quote}
-                </p>
-              </div>
-
-              {/* Author */}
-              <div className="flex items-center gap-4 pt-4 border-t border-border">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold">
-                  {testimonial.name.split(' ').map(n => n[0]).join('')}
+            <ScrollReveal key={testimonial.name} delay={index * 0.08}>
+              <div className="bg-card rounded-2xl p-6 shadow-soft card-hover h-full flex flex-col">
+                {/* Rating */}
+                <div className="flex gap-1 mb-3">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                  ))}
                 </div>
-                <div>
-                  <p className="font-semibold text-foreground">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+
+                {/* Quote */}
+                <div className="relative mb-5 flex-grow">
+                  <Quote className="absolute -top-1 -left-1 w-6 h-6 text-muted/40" />
+                  <p className="text-foreground leading-relaxed pl-5 text-sm">
+                    {testimonial.quote}
+                  </p>
+                </div>
+
+                {/* Author */}
+                <div className="flex items-center gap-3 pt-4 border-t border-border">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-semibold text-sm">
+                    {testimonial.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-foreground text-sm">{testimonial.name}</p>
+                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
 
         {/* Company Logos */}
-        <div className="text-center">
-          <p className="text-sm text-muted-foreground mb-6">
-            Professionals from these companies have stayed with us
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 lg:gap-12">
-            {companies.map((company) => (
-              <span
-                key={company}
-                className="text-xl font-display font-semibold text-muted-foreground/60 hover:text-muted-foreground transition-colors"
-              >
-                {company}
-              </span>
-            ))}
+        <ScrollReveal delay={0.3}>
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground mb-4">
+              Professionals from these companies have stayed with us
+            </p>
+            <div className="flex flex-wrap justify-center gap-6 lg:gap-10">
+              {companies.map((company) => (
+                <span
+                  key={company}
+                  className="text-lg font-display font-semibold text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                >
+                  {company}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );

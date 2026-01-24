@@ -9,6 +9,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FounderSection from "@/components/FounderSection";
 import FAQSection from "@/components/FAQSection";
 import WaitlistSection from "@/components/WaitlistSection";
+import FinalWaitlistSection from "@/components/FinalWaitlistSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -26,6 +27,7 @@ const Index = () => {
         <FounderSection />
         <FAQSection />
         <WaitlistSection />
+        <FinalWaitlistSection />
       </main>
       <Footer />
     </div>

@@ -1,10 +1,34 @@
-import { Car, Sparkles, Smartphone, Utensils } from "lucide-react";
+import { Monitor, Armchair, Keyboard, Headphones, Car, Sparkles, Smartphone, Utensils } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
-const addOns = [
+const workUpgrades = [
+  {
+    icon: Monitor,
+    title: "External monitors",
+    description: "Larger screens for focused work",
+  },
+  {
+    icon: Armchair,
+    title: "Premium chair upgrades",
+    description: "Herman Miller & Steelcase options",
+  },
+  {
+    icon: Keyboard,
+    title: "Ergonomic peripherals",
+    description: "Keyboards & mice for comfort",
+  },
+  {
+    icon: Headphones,
+    title: "Noise-cancelling headphones",
+    description: "Focus without distractions",
+  },
+];
+
+const comfortAddOns = [
   {
     icon: Car,
     title: "Airport pickup & drop",
-    description: "Arrive relaxed with seamless transfers",
+    description: "Seamless transfers",
   },
   {
     icon: Sparkles,
@@ -18,43 +42,78 @@ const addOns = [
   },
   {
     icon: Utensils,
-    title: "Meal partnerships",
-    description: "Curated local dining recommendations",
+    title: "Local experience recs",
+    description: "Curated dining & activities",
   },
 ];
 
 const AddOnsSection = () => {
   return (
-    <section className="py-16 bg-background">
-      <div className="container-wide">
-        <div className="text-center mb-12">
-          <h3 className="text-xl md:text-2xl font-display font-semibold text-foreground mb-3">
-            Designed to remove friction
-          </h3>
-          <p className="text-muted-foreground">
-            Optional add-ons, if you want them
-          </p>
-        </div>
+    <section className="py-14 md:py-16 px-6 md:px-8 lg:px-12 bg-background">
+      <div className="max-w-5xl mx-auto">
+        {/* Work Setup Upgrades - Primary */}
+        <ScrollReveal>
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <span className="text-sm font-medium text-primary uppercase tracking-wider mb-2 block">
+                Work Setup Upgrades
+              </span>
+              <h3 className="text-2xl md:text-3xl font-display font-semibold text-foreground">
+                Upgrade your productivity
+              </h3>
+            </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {addOns.map((addon, index) => (
-            <div
-              key={addon.title}
-              className="text-center p-6 animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mx-auto mb-4">
-                <addon.icon className="w-6 h-6 text-primary" />
-              </div>
-              <h4 className="font-medium text-foreground mb-2">
-                {addon.title}
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                {addon.description}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {workUpgrades.map((addon, index) => (
+                <ScrollReveal key={addon.title} delay={index * 0.08}>
+                  <div className="bg-card rounded-2xl p-5 shadow-soft border border-primary/10 hover:border-primary/25 transition-colors">
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                      <addon.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <h4 className="font-medium text-foreground mb-1">
+                      {addon.title}
+                    </h4>
+                    <p className="text-sm text-muted-foreground">
+                      {addon.description}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Comfort & Convenience - Secondary */}
+        <ScrollReveal delay={0.2}>
+          <div>
+            <div className="text-center mb-6">
+              <p className="text-sm text-muted-foreground mb-1">
+                Comfort & Convenience
+              </p>
+              <p className="text-muted-foreground/80 text-sm">
+                Available if you want them — not mandatory
               </p>
             </div>
-          ))}
-        </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {comfortAddOns.map((addon, index) => (
+                <ScrollReveal key={addon.title} delay={0.25 + index * 0.06}>
+                  <div className="text-center p-4 rounded-xl bg-muted/50">
+                    <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-2">
+                      <addon.icon className="w-4 h-4 text-muted-foreground" />
+                    </div>
+                    <h4 className="text-sm font-medium text-foreground mb-0.5">
+                      {addon.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground">
+                      {addon.description}
+                    </p>
+                  </div>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
