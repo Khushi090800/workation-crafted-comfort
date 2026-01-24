@@ -21,14 +21,14 @@ const FinalWaitlistSection = () => {
   };
 
   return (
-    <section className="py-16 md:py-20 px-6 md:px-8 lg:px-12 bg-secondary">
-      <div className="max-w-xl mx-auto">
+    <section className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-secondary">
+      <div className="max-w-md mx-auto">
         <ScrollReveal>
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground mb-4">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-3">
               Where will you work next?
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               Join our waitlist to get early access to new locations, properties, and work-ready stays as we expand globally.
             </p>
           </div>
@@ -36,10 +36,10 @@ const FinalWaitlistSection = () => {
 
         {!submitted ? (
           <ScrollReveal delay={0.1}>
-            <div className="bg-card rounded-3xl p-8 shadow-soft">
-              <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="card-base card-padding-lg">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="finalFullName" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="finalFullName" className="block text-sm font-medium text-foreground mb-1.5">
                     Full Name
                   </label>
                   <Input
@@ -49,12 +49,12 @@ const FinalWaitlistSection = () => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
-                    className="h-12 rounded-xl"
+                    className="h-11 rounded-xl"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="finalEmail" className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="finalEmail" className="block text-sm font-medium text-foreground mb-1.5">
                     Email Address
                   </label>
                   <Input
@@ -64,7 +64,7 @@ const FinalWaitlistSection = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-12 rounded-xl"
+                    className="h-11 rounded-xl"
                   />
                 </div>
 
@@ -98,12 +98,12 @@ const FinalWaitlistSection = () => {
           </ScrollReveal>
         ) : (
           <ScrollReveal>
-            <div className="bg-card rounded-3xl p-10 shadow-soft text-center">
-              <CheckCircle className="w-14 h-14 text-primary mx-auto mb-5" />
-              <h3 className="text-2xl font-display font-semibold text-foreground mb-3">
+            <div className="card-base card-padding-lg text-center">
+              <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
+              <h3 className="text-xl font-display font-semibold text-foreground mb-2">
                 You're on the list!
               </h3>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-sm">
                 We'll notify you as we expand to new destinations. Welcome to DeskAway!
               </p>
             </div>

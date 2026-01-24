@@ -53,17 +53,17 @@ const FAQSection = () => {
 
         <ScrollReveal delay={0.1}>
           <div className="max-w-3xl mx-auto">
-            <Accordion type="single" collapsible className="space-y-3">
+            <Accordion type="single" collapsible className="space-y-2">
               {faqs.map((faq, index) => (
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="bg-card rounded-xl px-5 shadow-soft border-none"
+                  className="card-base px-5 border-none"
                 >
-                  <AccordionTrigger className="text-left font-display font-semibold text-foreground hover:no-underline py-5">
+                  <AccordionTrigger className="text-left text-sm font-display font-semibold text-foreground hover:no-underline py-4">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground leading-relaxed pb-5 text-sm">
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-4 text-sm">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

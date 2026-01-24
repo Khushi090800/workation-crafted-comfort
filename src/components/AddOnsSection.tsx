@@ -63,17 +63,17 @@ const AddOnsSection = () => {
               </h3>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {workUpgrades.map((addon, index) => (
                 <ScrollReveal key={addon.title} delay={index * 0.08}>
-                  <div className="bg-card rounded-2xl p-5 shadow-soft border border-primary/10 hover:border-primary/25 transition-colors">
-                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <div className="card-base card-hover card-padding h-full border border-primary/10">
+                    <div className="icon-container bg-primary/10 mb-3">
                       <addon.icon className="w-5 h-5 text-primary" />
                     </div>
-                    <h4 className="font-medium text-foreground mb-1">
+                    <h4 className="font-medium text-foreground text-sm mb-1 leading-tight">
                       {addon.title}
                     </h4>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {addon.description}
                     </p>
                   </div>
@@ -90,22 +90,22 @@ const AddOnsSection = () => {
               <p className="text-sm text-muted-foreground mb-1">
                 Comfort & Convenience
               </p>
-              <p className="text-muted-foreground/80 text-sm">
+              <p className="text-muted-foreground/80 text-xs">
                 Available if you want them — not mandatory
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {comfortAddOns.map((addon, index) => (
                 <ScrollReveal key={addon.title} delay={0.25 + index * 0.06}>
-                  <div className="text-center p-4 rounded-xl bg-muted/50">
-                    <div className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center mx-auto mb-2">
+                  <div className="text-center p-4 rounded-xl bg-muted/50 h-full">
+                    <div className="icon-container-sm bg-secondary mx-auto mb-2">
                       <addon.icon className="w-4 h-4 text-muted-foreground" />
                     </div>
-                    <h4 className="text-sm font-medium text-foreground mb-0.5">
+                    <h4 className="text-xs font-medium text-foreground mb-0.5 leading-tight">
                       {addon.title}
                     </h4>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {addon.description}
                     </p>
                   </div>

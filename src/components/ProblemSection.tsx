@@ -35,21 +35,21 @@ const ProblemSection = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-10">
+        <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
           {/* Problems Column */}
           <ScrollReveal delay={0.1}>
-            <div className="bg-card rounded-3xl p-7 shadow-soft h-full">
-              <h3 className="text-lg font-display font-semibold text-foreground mb-5 flex items-center gap-3">
-                <span className="w-9 h-9 rounded-full bg-destructive/10 flex items-center justify-center">
+            <div className="card-base card-padding-lg h-full">
+              <h3 className="text-base font-display font-semibold text-foreground mb-4 flex items-center gap-3">
+                <span className="icon-container-sm bg-destructive/10">
                   <XCircle className="w-4 h-4 text-destructive" />
                 </span>
                 Typical Workation Problems
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {problems.map((problem, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3 text-muted-foreground text-sm"
+                    className="flex items-start gap-2.5 text-muted-foreground text-sm"
                   >
                     <XCircle className="w-4 h-4 text-destructive flex-shrink-0 mt-0.5" />
                     <span>{problem}</span>
@@ -61,18 +61,18 @@ const ProblemSection = () => {
 
           {/* Solutions Column */}
           <ScrollReveal delay={0.15}>
-            <div className="bg-primary rounded-3xl p-7 shadow-soft h-full">
-              <h3 className="text-lg font-display font-semibold text-primary-foreground mb-5 flex items-center gap-3">
-                <span className="w-9 h-9 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+            <div className="bg-primary rounded-xl p-6 h-full shadow-soft">
+              <h3 className="text-base font-display font-semibold text-primary-foreground mb-4 flex items-center gap-3">
+                <span className="icon-container-sm bg-primary-foreground/20">
                   <CheckCircle className="w-4 h-4 text-primary-foreground" />
                 </span>
                 The DeskAway Difference
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5">
                 {solutions.map((solution, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-3 text-primary-foreground/90 text-sm"
+                    className="flex items-start gap-2.5 text-primary-foreground/90 text-sm"
                   >
                     <CheckCircle className="w-4 h-4 text-primary-foreground flex-shrink-0 mt-0.5" />
                     <span>{solution}</span>

@@ -40,10 +40,10 @@ const properties = [
 const PropertiesSection = () => {
   return (
     <section id="properties" className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-background">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Section Header */}
         <ScrollReveal>
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
               Featured Properties
             </span>
@@ -56,10 +56,10 @@ const PropertiesSection = () => {
           </div>
         </ScrollReveal>
 
-        {/* Properties Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Properties Grid - Uniform cards */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {properties.map((property, index) => (
-            <ScrollReveal key={property.title} delay={index * 0.1}>
+            <ScrollReveal key={property.title} delay={index * 0.08}>
               <PropertyCard {...property} />
             </ScrollReveal>
           ))}

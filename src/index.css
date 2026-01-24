@@ -136,18 +136,50 @@
     background-image: var(--gradient-warm);
   }
 
+  /* Unified card system */
+  .card-base {
+    @apply bg-card rounded-xl;
+    box-shadow: var(--shadow-soft);
+  }
+
   .card-elevated {
-    @apply bg-card rounded-2xl;
+    @apply bg-card rounded-xl;
     box-shadow: var(--shadow-card);
   }
 
   .card-hover {
-    @apply transition-all duration-300 ease-out;
+    @apply transition-shadow duration-300 ease-out;
   }
 
   .card-hover:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-elevated);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Fixed aspect ratios for images */
+  .aspect-property {
+    @apply aspect-[16/10];
+  }
+
+  .aspect-destination {
+    @apply aspect-[4/3];
+  }
+
+  /* Consistent card padding */
+  .card-padding {
+    @apply p-5;
+  }
+
+  .card-padding-lg {
+    @apply p-6;
+  }
+
+  /* Uniform icon containers */
+  .icon-container {
+    @apply w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0;
+  }
+
+  .icon-container-sm {
+    @apply w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0;
   }
 }
 
