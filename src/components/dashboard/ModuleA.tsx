@@ -2,11 +2,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
   Calendar, Users, Bike, Plane, Phone, Shirt, 
-  CheckCircle2, Clock, Sparkles, Check
+  CheckCircle2, Clock, Check
 } from 'lucide-react';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import ScrollReveal from '@/components/ScrollReveal';
 
 // Weekly Events Data
 const weeklyEvents = [
@@ -72,54 +73,58 @@ const ModuleA = () => {
   const timelineItems = getTimelineItems();
 
   return (
-    <section className="space-y-10">
-      {/* Section Header */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-orange-100 to-amber-100 border border-orange-200/50">
-          <Sparkles className="w-4 h-4 text-orange-500" />
-          <span className="text-sm font-medium text-orange-700">Operations & Community</span>
+    <section className="max-w-5xl mx-auto">
+      {/* Section Header - Landing style */}
+      <ScrollReveal>
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+            Operations & Community
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+            Crafted Experiences
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Curated gatherings and seamless logistics for your workation journey.
+          </p>
         </div>
-        <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900">
-          Crafted Experiences
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Curated gatherings and seamless logistics for your workation journey
-        </p>
-      </div>
+      </ScrollReveal>
 
       {/* Two Column Layout */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-4 mb-10">
         {/* Left: Intentional Gatherings */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Users className="w-5 h-5 text-orange-500" />
-            Intentional Gatherings
-          </h3>
+          <ScrollReveal delay={0.1}>
+            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+              <div className="icon-container-sm bg-primary/10">
+                <Users className="w-4 h-4 text-primary" />
+              </div>
+              Intentional Gatherings
+            </h3>
+          </ScrollReveal>
           <div className="space-y-4">
-            {weeklyEvents.map((event) => {
+            {weeklyEvents.map((event, index) => {
               const isConfirmed = isEventConfirmed(event.id);
               return (
-                <Card 
-                  key={event.id} 
-                  className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
-                >
-                  <CardContent className="p-6">
+                <ScrollReveal key={event.id} delay={0.1 + index * 0.08}>
+                  <div className="card-base card-hover card-padding-lg">
                     <div className="flex items-start gap-4">
-                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center flex-shrink-0">
-                        <event.icon className="w-6 h-6 text-orange-600" />
+                      <div className="icon-container bg-primary/10">
+                        <event.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-lg">{event.title}</h4>
-                        <p className="text-gray-500 text-sm">{event.date} • {event.time}</p>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-display font-semibold text-foreground text-base">{event.title}</h4>
+                        <p className="text-muted-foreground text-sm">{event.date} • {event.time}</p>
                       </div>
                     </div>
                     <Button 
                       onClick={() => handleConfirmEvent(event)}
                       disabled={isConfirmed}
-                      className={`w-full mt-5 rounded-2xl h-12 font-medium shadow-lg transition-all duration-300 active:scale-95 ${
+                      variant={isConfirmed ? "default" : "hero"}
+                      size="lg"
+                      className={`w-full mt-5 ${
                         isConfirmed 
-                          ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white shadow-emerald-400/40 cursor-default ring-2 ring-emerald-300 ring-offset-2' 
-                          : 'bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white shadow-emerald-500/25 hover:shadow-xl hover:-translate-y-0.5'
+                          ? 'bg-accent/20 text-accent hover:bg-accent/20 cursor-default' 
+                          : ''
                       }`}
                     >
                       {isConfirmed ? (
@@ -134,8 +139,8 @@ const ModuleA = () => {
                         </>
                       )}
                     </Button>
-                  </CardContent>
-                </Card>
+                  </div>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -143,13 +148,17 @@ const ModuleA = () => {
 
         {/* Right: Logistics */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Bike className="w-5 h-5 text-indigo-500" />
-            Seamless Logistics
-          </h3>
-          <Card className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-2 gap-4">
+          <ScrollReveal delay={0.2}>
+            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+              <div className="icon-container-sm bg-primary/10">
+                <Bike className="w-4 h-4 text-primary" />
+              </div>
+              Seamless Logistics
+            </h3>
+          </ScrollReveal>
+          <ScrollReveal delay={0.24}>
+            <div className="card-base card-padding-lg">
+              <div className="grid grid-cols-2 gap-3">
                 {logisticsServices.map((service) => {
                   const isBooked = isLogisticBooked(service.id);
                   return (
@@ -158,28 +167,26 @@ const ModuleA = () => {
                       variant="outline"
                       onClick={() => handleBookLogistic(service)}
                       disabled={isBooked}
-                      className={`h-auto py-4 px-4 flex flex-col items-center gap-3 rounded-2xl transition-all duration-300 active:scale-95 ${
+                      className={`h-auto py-4 px-4 flex flex-col items-center gap-3 rounded-xl transition-all duration-200 ${
                         isBooked
-                          ? 'bg-gradient-to-br from-teal-50 to-emerald-50 border-teal-200 cursor-default ring-1 ring-teal-200'
-                          : 'bg-gradient-to-br from-blue-50 to-indigo-50 border-indigo-100 hover:from-blue-100 hover:to-indigo-100 hover:-translate-y-1 hover:shadow-lg'
+                          ? 'bg-accent/10 border-accent/30 cursor-default'
+                          : 'bg-secondary border-border hover:bg-secondary/80 hover:-translate-y-0.5 hover:shadow-card'
                       }`}
                     >
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                        isBooked
-                          ? 'bg-gradient-to-br from-teal-500 to-emerald-500'
-                          : 'bg-gradient-to-br from-blue-500 to-indigo-500'
+                      <div className={`icon-container-sm ${
+                        isBooked ? 'bg-accent/20' : 'bg-primary'
                       }`}>
                         {isBooked ? (
-                          <Check className="w-5 h-5 text-white" />
+                          <Check className="w-4 h-4 text-accent" />
                         ) : (
-                          <service.icon className="w-5 h-5 text-white" />
+                          <service.icon className="w-4 h-4 text-primary-foreground" />
                         )}
                       </div>
                       <div className="text-center">
-                        <span className={`block font-medium ${isBooked ? 'text-teal-700' : 'text-gray-800'}`}>
+                        <span className={`block font-medium text-sm ${isBooked ? 'text-accent' : 'text-foreground'}`}>
                           {isBooked ? 'Booked ✓' : service.label}
                         </span>
-                        <span className={`text-sm font-semibold ${isBooked ? 'text-teal-600' : 'text-indigo-600'}`}>
+                        <span className={`text-xs font-semibold ${isBooked ? 'text-accent/70' : 'text-primary'}`}>
                           {service.price}
                         </span>
                       </div>
@@ -187,59 +194,61 @@ const ModuleA = () => {
                   );
                 })}
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
 
       {/* Timeline: Your Journey */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-orange-500" />
-          Your Journey
-        </h3>
-        <Card className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl overflow-hidden">
-          <CardContent className="p-6">
+      <ScrollReveal delay={0.3}>
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+            <div className="icon-container-sm bg-accent/10">
+              <Clock className="w-4 h-4 text-accent" />
+            </div>
+            Your Journey
+          </h3>
+          <div className="card-base card-padding-lg">
             <div className="relative">
-              {/* Gradient Timeline Line */}
-              <div className="absolute left-[11px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-orange-400 via-amber-400 to-orange-300 rounded-full" />
+              {/* Timeline Line */}
+              <div className="absolute left-[11px] top-3 bottom-3 w-0.5 bg-accent/30 rounded-full" />
               
-              <div className="space-y-6">
+              <div className="space-y-5">
                 {timelineItems.map((item) => (
-                  <div key={item.id} className="flex gap-6 relative animate-fade-in">
-                    {/* Golden Dot */}
+                  <div key={item.id} className="flex gap-5 relative animate-fade-in">
+                    {/* Dot */}
                     <div className="relative z-10">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
                         item.status === 'confirmed' 
-                          ? 'bg-gradient-to-br from-amber-400 to-orange-500' 
-                          : 'bg-gradient-to-br from-orange-400 to-rose-400'
-                      } shadow-lg`}>
-                        <div className="w-2 h-2 bg-white rounded-full" />
+                          ? 'bg-accent' 
+                          : 'bg-primary'
+                      }`}>
+                        <div className="w-2 h-2 bg-background rounded-full" />
                       </div>
                     </div>
                     
                     {/* Content */}
-                    <div className="flex-1 pb-2">
+                    <div className="flex-1 pb-1">
                       <div className="flex items-center gap-3 mb-1">
-                        <span className="font-semibold text-gray-900">{item.title}</span>
-                        <span className={`text-xs px-3 py-1 rounded-full font-medium ${
+                        <span className="font-display font-semibold text-foreground">{item.title}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-lg font-medium ${
                           item.status === 'confirmed' 
-                            ? 'bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700' 
-                            : 'bg-gradient-to-r from-orange-100 to-amber-100 text-orange-700'
+                            ? 'bg-accent/10 text-accent' 
+                            : 'bg-primary/10 text-primary'
                         }`}>
                           {item.status === 'confirmed' ? 'Confirmed' : 'Active'}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500 mb-1">{item.time}</p>
-                      <p className="text-sm text-gray-600">{item.description}</p>
+                      <p className="text-sm text-muted-foreground mb-0.5">{item.time}</p>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
+      </ScrollReveal>
     </section>
   );
 };

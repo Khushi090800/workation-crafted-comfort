@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -10,12 +9,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { 
-  MapPin, Clock, Briefcase, Dumbbell, Heart, 
-  Palette, Utensils, Mountain, Compass, Sparkles, Check
+  Clock, Briefcase, Dumbbell, Heart, 
+  Palette, Utensils, Mountain, Compass, Check
 } from 'lucide-react';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import ScrollReveal from '@/components/ScrollReveal';
 
 // Activity data from the provided JSON
 const activitiesData = [
@@ -46,15 +46,6 @@ const typeIcons: Record<string, React.ElementType> = {
   Tour: Mountain,
 };
 
-const typeColors: Record<string, string> = {
-  Work: 'from-blue-500 to-indigo-500',
-  Physical: 'from-emerald-500 to-teal-500',
-  Wellness: 'from-rose-500 to-pink-500',
-  Art: 'from-violet-500 to-purple-500',
-  Eats: 'from-orange-500 to-amber-500',
-  Tour: 'from-cyan-500 to-blue-500',
-};
-
 const triggerVolcanoConfetti = () => {
   const duration = 2000;
   const end = Date.now() + duration;
@@ -65,14 +56,14 @@ const triggerVolcanoConfetti = () => {
       angle: 60,
       spread: 55,
       origin: { x: 0 },
-      colors: ['#8b5cf6', '#a855f7', '#d946ef'],
+      colors: ['hsl(18, 70%, 55%)', 'hsl(35, 65%, 60%)', 'hsl(192, 65%, 25%)'],
     });
     confetti({
       particleCount: 3,
       angle: 120,
       spread: 55,
       origin: { x: 1 },
-      colors: ['#8b5cf6', '#a855f7', '#d946ef'],
+      colors: ['hsl(18, 70%, 55%)', 'hsl(35, 65%, 60%)', 'hsl(192, 65%, 25%)'],
     });
 
     if (Date.now() < end) {
@@ -138,32 +129,33 @@ const ModuleC = () => {
   };
 
   return (
-    <section className="space-y-10">
-      {/* Section Header */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-rose-100 to-orange-100 border border-rose-200/50">
-          <Compass className="w-4 h-4 text-orange-500" />
-          <span className="text-sm font-medium text-orange-700">Leisure & Discovery</span>
+    <section className="max-w-5xl mx-auto">
+      {/* Section Header - Landing style */}
+      <ScrollReveal>
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+            Leisure & Discovery
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+            Leisure & Lombok
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Explore curated experiences that blend adventure with tranquility.
+          </p>
         </div>
-        <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900">
-          Leisure & Lombok
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Explore curated experiences that blend adventure with tranquility
-        </p>
-      </div>
+      </ScrollReveal>
 
       {/* Filters */}
-      <Card className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl">
-        <CardContent className="p-6 space-y-5">
+      <ScrollReveal delay={0.1}>
+        <div className="card-base card-padding-lg space-y-4 mb-10">
           {/* Time Dropdown */}
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm font-medium text-gray-700">Time Available:</span>
+            <span className="text-sm font-medium text-foreground">Time Available:</span>
             <Select value={timeFilter} onValueChange={setTimeFilter}>
-              <SelectTrigger className="w-40 bg-white border-gray-200 rounded-xl">
+              <SelectTrigger className="w-40 bg-background border-border rounded-xl">
                 <SelectValue placeholder="Select time" />
               </SelectTrigger>
-              <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-xl z-50">
+              <SelectContent className="bg-card border border-border rounded-xl shadow-elevated z-50">
                 <SelectItem value="all">All Durations</SelectItem>
                 {timeFilters.map(tf => (
                   <SelectItem key={tf.value} value={tf.value}>{tf.label}</SelectItem>
@@ -174,15 +166,15 @@ const ModuleC = () => {
 
           {/* Type Chips */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">Type:</span>
+            <span className="text-sm font-medium text-foreground">Type:</span>
             {typeFilters.map(filter => (
               <button
                 key={filter}
                 onClick={() => toggleFilter(filter, activeTypeFilters, setActiveTypeFilters)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 active:scale-95 ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   activeTypeFilters.includes(filter) 
-                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/25' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-accent text-accent-foreground shadow-soft' 
+                    : 'bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground'
                 }`}
               >
                 {filter}
@@ -192,123 +184,113 @@ const ModuleC = () => {
 
           {/* Distance Chips */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">Distance:</span>
+            <span className="text-sm font-medium text-foreground">Distance:</span>
             {distanceFilters.map(filter => (
               <button
                 key={filter}
                 onClick={() => toggleFilter(filter, activeDistanceFilters, setActiveDistanceFilters)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 active:scale-95 ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   activeDistanceFilters.includes(filter) 
-                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/25' 
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-accent text-accent-foreground shadow-soft' 
+                    : 'bg-secondary text-muted-foreground hover:bg-secondary/80 hover:text-foreground'
                 }`}
               >
                 {filter}
               </button>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </ScrollReveal>
 
       {/* Activities Grid */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredActivities.map(activity => {
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        {filteredActivities.map((activity, index) => {
           const IconComponent = typeIcons[activity.activity_type] || Compass;
-          const gradientColor = typeColors[activity.activity_type] || 'from-gray-500 to-gray-600';
           const isBooked = isActivityBooked(activity.id);
           
           return (
-            <Card 
-              key={activity.id} 
-              className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
-            >
-              <CardContent className="p-6">
+            <ScrollReveal key={activity.id} delay={0.15 + index * 0.05}>
+              <div className="card-base card-hover card-padding-lg h-full flex flex-col">
                 <div className="flex items-start gap-4 mb-4">
-                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 transition-all duration-300 ${
-                    isBooked 
-                      ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
-                      : `bg-gradient-to-br ${gradientColor}`
-                  }`}>
+                  <div className={`icon-container ${isBooked ? 'bg-accent/20' : 'bg-primary/10'}`}>
                     {isBooked ? (
-                      <Check className="w-6 h-6 text-white" />
+                      <Check className="w-5 h-5 text-accent" />
                     ) : (
-                      <IconComponent className="w-6 h-6 text-white" />
+                      <IconComponent className="w-5 h-5 text-primary" />
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-bold text-gray-900 text-lg">{activity.name}</h4>
-                    <p className="text-sm text-gray-500">{activity.type} • {activity.distance}km</p>
+                    <h4 className="font-display font-bold text-foreground text-base">{activity.name}</h4>
+                    <p className="text-sm text-muted-foreground">{activity.type} • {activity.distance}km</p>
                   </div>
                 </div>
                 
-                <div className="flex flex-wrap gap-2 mb-5">
-                  <Badge className={`text-xs rounded-full px-3 py-1 ${
-                    activity.work_vibe === 'Deep Work' ? 'bg-emerald-100 text-emerald-700' :
-                    activity.work_vibe === 'Social' ? 'bg-blue-100 text-blue-700' :
-                    'bg-orange-100 text-orange-700'
+                <div className="flex flex-wrap gap-2 mb-4">
+                  <Badge className={`text-xs rounded-lg px-2 py-0.5 border-0 ${
+                    activity.work_vibe === 'Deep Work' ? 'bg-primary/10 text-primary' :
+                    activity.work_vibe === 'Social' ? 'bg-accent/10 text-accent' :
+                    'bg-muted text-muted-foreground'
                   }`}>
                     {activity.work_vibe}
                   </Badge>
-                  <Badge className="text-xs rounded-full px-3 py-1 bg-gray-100 text-gray-600">
+                  <Badge className="text-xs rounded-lg px-2 py-0.5 bg-secondary text-muted-foreground border-0">
                     <Clock className="w-3 h-3 mr-1" />
                     {activity.duration_tag}
                   </Badge>
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                   <span className={`font-bold ${
-                    activity.price === 'Free' ? 'text-emerald-600' : 'text-gray-900'
+                    activity.price === 'Free' ? 'text-primary' : 'text-foreground'
                   }`}>
                     {activity.price}
                   </span>
                   <Button 
                     onClick={() => handleBookActivity(activity)}
                     disabled={isBooked}
-                    variant={activity.price === 'Free' && !isBooked ? 'outline' : 'default'}
-                    className={`rounded-xl transition-all duration-300 active:scale-95 ${
-                      isBooked
-                        ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white cursor-default ring-2 ring-emerald-300 ring-offset-2'
-                        : activity.price === 'Free' 
-                          ? 'border-orange-200 text-orange-600 hover:bg-orange-50' 
-                          : 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/25 hover:-translate-y-0.5'
-                    }`}
+                    variant={isBooked ? "default" : (activity.price === 'Free' ? 'heroOutline' : 'hero')}
+                    size="sm"
+                    className={isBooked ? 'bg-accent/20 text-accent hover:bg-accent/20 cursor-default' : ''}
                   >
                     {isBooked ? 'Booked ✓' : activity.price === 'Free' ? 'Explore' : 'Book Now'}
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </ScrollReveal>
           );
         })}
       </div>
 
       {/* Marketplace Hero - Volcano Trek */}
-      <Card className={`rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 ${
-        bookings.volcanoTrekBooked 
-          ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600'
-          : 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600'
-      }`}>
-        <CardContent className="p-8 md:p-10">
+      <ScrollReveal delay={0.3}>
+        <div className={`card-elevated rounded-2xl p-8 md:p-10 transition-all duration-300 ${
+          bookings.volcanoTrekBooked 
+            ? 'bg-accent/10 border border-accent/30'
+            : 'bg-primary'
+        }`}>
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className={`w-16 h-16 rounded-2xl backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
-                bookings.volcanoTrekBooked ? 'bg-white/30' : 'bg-white/20'
+              <div className={`icon-container ${
+                bookings.volcanoTrekBooked ? 'bg-accent/20' : 'bg-primary-foreground/20'
               }`}>
                 {bookings.volcanoTrekBooked ? (
-                  <Check className="w-8 h-8 text-white" />
+                  <Check className="w-6 h-6 text-accent" />
                 ) : (
-                  <Mountain className="w-8 h-8 text-white" />
+                  <Mountain className="w-6 h-6 text-primary-foreground" />
                 )}
               </div>
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span className={`text-sm font-medium ${bookings.volcanoTrekBooked ? 'text-emerald-200' : 'text-purple-200'}`}>
-                    {bookings.volcanoTrekBooked ? 'Adventure Confirmed!' : 'Premium Experience'}
-                  </span>
-                </div>
-                <h4 className="text-2xl font-display font-bold text-white">Volcano Trek Adventure</h4>
-                <p className={bookings.volcanoTrekBooked ? 'text-emerald-200' : 'text-purple-200'}>
+                <span className={`text-sm font-medium mb-1 block ${
+                  bookings.volcanoTrekBooked ? 'text-accent' : 'text-primary-foreground/80'
+                }`}>
+                  {bookings.volcanoTrekBooked ? 'Adventure Confirmed!' : 'Premium Experience'}
+                </span>
+                <h4 className={`text-2xl font-display font-bold ${
+                  bookings.volcanoTrekBooked ? 'text-foreground' : 'text-primary-foreground'
+                }`}>
+                  Volcano Trek Adventure
+                </h4>
+                <p className={bookings.volcanoTrekBooked ? 'text-muted-foreground' : 'text-primary-foreground/70'}>
                   {bookings.volcanoTrekBooked 
                     ? 'Your guide will contact you with details'
                     : 'Full-day guided trek to Mount Rinjani with stunning views'
@@ -317,22 +299,27 @@ const ModuleC = () => {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-white">$50</span>
+              <span className={`text-3xl font-display font-bold ${
+                bookings.volcanoTrekBooked ? 'text-foreground' : 'text-primary-foreground'
+              }`}>
+                $50
+              </span>
               <Button 
                 onClick={handleBookVolcanoTrek}
                 disabled={bookings.volcanoTrekBooked}
-                className={`rounded-xl px-8 py-6 text-lg font-semibold shadow-xl transition-all duration-300 active:scale-95 ${
-                  bookings.volcanoTrekBooked
-                    ? 'bg-white/30 text-white cursor-default ring-2 ring-white/50'
-                    : 'bg-white text-purple-600 hover:bg-purple-50 hover:-translate-y-1'
-                }`}
+                variant={bookings.volcanoTrekBooked ? "default" : "accent"}
+                size="xl"
+                className={bookings.volcanoTrekBooked 
+                  ? 'bg-accent/20 text-accent hover:bg-accent/20 cursor-default' 
+                  : 'bg-accent-foreground text-accent hover:bg-accent-foreground/90'
+                }
               >
                 {bookings.volcanoTrekBooked ? 'Booked ✓' : 'Book Volcano Trek'}
               </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </ScrollReveal>
     </section>
   );
 };
