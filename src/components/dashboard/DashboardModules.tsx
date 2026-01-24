@@ -4,7 +4,7 @@ import ModuleC from './ModuleC';
 
 const DashboardModules = () => {
   return (
-    <div className="space-y-12">
+    <div className="space-y-20">
       <ModuleA />
       <ModuleB />
       <ModuleC />
