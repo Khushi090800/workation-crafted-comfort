@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
@@ -11,6 +10,7 @@ import {
 } from 'recharts';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { toast } from 'sonner';
+import ScrollReveal from '@/components/ScrollReveal';
 
 // Generate initial heartbeat data
 const generateHeartbeatData = () => 
@@ -28,8 +28,6 @@ const equipmentItems = [
     price: '$20',
     duration: '14 days',
     icon: Monitor,
-    gradient: 'from-violet-500 to-purple-600',
-    bgGradient: 'from-violet-50 to-purple-50',
   },
   {
     id: 2,
@@ -37,8 +35,6 @@ const equipmentItems = [
     price: '$15',
     duration: '14 days',
     icon: Keyboard,
-    gradient: 'from-blue-500 to-indigo-600',
-    bgGradient: 'from-blue-50 to-indigo-50',
   },
   {
     id: 3,
@@ -46,8 +42,6 @@ const equipmentItems = [
     price: '$30',
     duration: '14 days',
     icon: Armchair,
-    gradient: 'from-emerald-500 to-teal-600',
-    bgGradient: 'from-emerald-50 to-teal-50',
   },
 ];
 
@@ -98,43 +92,46 @@ const ModuleB = () => {
 
   // Status indicators with animated battery
   const statusItems = [
-    { label: 'Main Grid', status: 'OK', icon: Activity, color: 'emerald' },
-    { label: 'Battery', status: `${batteryLevel}%`, icon: Battery, color: 'amber' },
-    { label: 'ISP Speed', status: '150Mbps', icon: Wifi, color: 'emerald' },
+    { label: 'Main Grid', status: 'OK', icon: Activity, isOk: true },
+    { label: 'Battery', status: `${batteryLevel}%`, icon: Battery, isOk: batteryLevel > 50 },
+    { label: 'ISP Speed', status: '150Mbps', icon: Wifi, isOk: true },
   ];
 
   return (
-    <section className="space-y-10">
-      {/* Section Header */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-200/50">
-          <Zap className="w-4 h-4 text-indigo-500" />
-          <span className="text-sm font-medium text-indigo-700">Workplace Suite</span>
+    <section className="max-w-5xl mx-auto">
+      {/* Section Header - Landing style */}
+      <ScrollReveal>
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+            Workplace Suite
+          </span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+            Workspace Excellence
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Enterprise-grade connectivity and premium equipment at your fingertips.
+          </p>
         </div>
-        <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900">
-          Workspace Excellence
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Enterprise-grade connectivity and premium equipment at your fingertips
-        </p>
-      </div>
+      </ScrollReveal>
 
       {/* Two Column Layout */}
-      <div className="grid lg:grid-cols-2 gap-8">
+      <div className="grid lg:grid-cols-2 gap-4 mb-10">
         {/* Left: Connectivity Pulse */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-emerald-500" />
-            Connectivity Pulse
-          </h3>
-          <Card className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl">
-            <CardContent className="p-6">
+        <ScrollReveal delay={0.1}>
+          <div className="space-y-4">
+            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+              <div className="icon-container-sm bg-primary/10">
+                <Activity className="w-4 h-4 text-primary" />
+              </div>
+              Connectivity Pulse
+            </h3>
+            <div className="card-base card-padding-lg">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 transition-all duration-300">{currentPing}ms</p>
-                  <p className="text-sm text-gray-500">Average Ping</p>
+                  <p className="text-2xl font-display font-bold text-foreground transition-all duration-300">{currentPing}ms</p>
+                  <p className="text-sm text-muted-foreground">Average Ping</p>
                 </div>
-                <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 border-0 px-3 py-1">
+                <Badge className="bg-accent/10 text-accent border-0 px-3 py-1 font-medium">
                   <CheckCircle2 className="w-3 h-3 mr-1" />
                   99.9% Uptime
                 </Badge>
@@ -143,40 +140,40 @@ const ModuleB = () => {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={heartbeatData}>
                     <defs>
-                      <linearGradient id="pingGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                      <linearGradient id="pingGradientB" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
                       dataKey="hour" 
-                      tick={{ fontSize: 10, fill: '#9ca3af' }}
+                      tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
                       tickLine={false}
                       axisLine={false}
                       interval={5}
                     />
                     <YAxis 
-                      tick={{ fontSize: 10, fill: '#9ca3af' }}
+                      tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
                       tickLine={false}
                       axisLine={false}
                       domain={[15, 25]}
                     />
                     <Tooltip 
                       contentStyle={{ 
-                        backgroundColor: 'white',
-                        border: '1px solid #e5e7eb',
+                        backgroundColor: 'hsl(var(--card))',
+                        border: '1px solid hsl(var(--border))',
                         borderRadius: '12px',
                         fontSize: '12px',
-                        boxShadow: '0 10px 25px -5px rgba(0,0,0,0.1)'
+                        boxShadow: 'var(--shadow-card)'
                       }}
                     />
                     <Area 
                       type="monotone" 
                       dataKey="ping" 
-                      stroke="#10b981" 
+                      stroke="hsl(var(--primary))" 
                       strokeWidth={2}
-                      fill="url(#pingGradient)"
+                      fill="url(#pingGradientB)"
                       name="Ping (ms)"
                       isAnimationActive={true}
                       animationDuration={500}
@@ -184,99 +181,86 @@ const ModuleB = () => {
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </div>
+        </ScrollReveal>
 
         {/* Right: Status Badges */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-            <Wifi className="w-5 h-5 text-indigo-500" />
-            System Status
-          </h3>
-          <Card className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl h-[calc(100%-2rem)]">
-            <CardContent className="p-6 flex flex-col justify-center h-full">
-              <div className="space-y-4">
+        <ScrollReveal delay={0.2}>
+          <div className="space-y-4">
+            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+              <div className="icon-container-sm bg-primary/10">
+                <Wifi className="w-4 h-4 text-primary" />
+              </div>
+              System Status
+            </h3>
+            <div className="card-base card-padding-lg h-[calc(100%-2.5rem)] flex flex-col justify-center">
+              <div className="space-y-3">
                 {statusItems.map((item) => (
                   <div 
                     key={item.label}
-                    className={`flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r transition-all duration-500 ${
-                      item.color === 'emerald' 
-                        ? 'from-emerald-50 to-teal-50 border border-emerald-100' 
-                        : 'from-amber-50 to-orange-50 border border-amber-100'
-                    }`}
+                    className={`flex items-center justify-between p-4 rounded-xl bg-secondary border border-border transition-all duration-300`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
-                        item.color === 'emerald' 
-                          ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
-                          : 'bg-gradient-to-br from-amber-500 to-orange-500'
-                      }`}>
-                        <item.icon className="w-5 h-5 text-white" />
+                      <div className={`icon-container-sm ${item.isOk ? 'bg-primary' : 'bg-accent'}`}>
+                        <item.icon className="w-4 h-4 text-primary-foreground" />
                       </div>
-                      <span className="font-medium text-gray-800">{item.label}</span>
+                      <span className="font-medium text-foreground">{item.label}</span>
                     </div>
-                    <span className={`font-bold transition-all duration-300 ${
-                      item.color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'
-                    }`}>
+                    <span className={`font-bold ${item.isOk ? 'text-primary' : 'text-accent'}`}>
                       {item.status}
                     </span>
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
 
       {/* Equipment Marketplace */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-          <Monitor className="w-5 h-5 text-violet-500" />
-          Equipment Marketplace
-        </h3>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {equipmentItems.map((item) => {
-            const isReserved = isEquipmentReserved(item.id);
-            return (
-              <Card 
-                key={item.id} 
-                className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
-              >
-                <CardContent className="p-6">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg transition-all duration-300 ${
-                    isReserved 
-                      ? 'bg-gradient-to-br from-purple-500 to-violet-600' 
-                      : `bg-gradient-to-br ${item.gradient}`
-                  }`}>
-                    {isReserved ? (
-                      <Check className="w-8 h-8 text-white" />
-                    ) : (
-                      <item.icon className="w-8 h-8 text-white" />
-                    )}
+      <ScrollReveal delay={0.3}>
+        <div className="max-w-4xl mx-auto">
+          <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
+            <div className="icon-container-sm bg-primary/10">
+              <Monitor className="w-4 h-4 text-primary" />
+            </div>
+            Equipment Marketplace
+          </h3>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {equipmentItems.map((item, index) => {
+              const isReserved = isEquipmentReserved(item.id);
+              return (
+                <ScrollReveal key={item.id} delay={0.3 + index * 0.08}>
+                  <div className="card-base card-hover card-padding-lg">
+                    <div className={`icon-container bg-primary mb-4`}>
+                      {isReserved ? (
+                        <Check className="w-5 h-5 text-primary-foreground" />
+                      ) : (
+                        <item.icon className="w-5 h-5 text-primary-foreground" />
+                      )}
+                    </div>
+                    <h4 className="font-display font-bold text-foreground text-base mb-1">{item.name}</h4>
+                    <p className="text-muted-foreground text-sm mb-4">{item.duration} rental</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xl font-display font-bold text-foreground">{item.price}</span>
+                      <Button 
+                        onClick={() => handleReserveEquipment(item)}
+                        disabled={isReserved}
+                        variant={isReserved ? "default" : "hero"}
+                        size="default"
+                        className={isReserved ? 'bg-accent/20 text-accent hover:bg-accent/20 cursor-default' : ''}
+                      >
+                        {isReserved ? 'Reserved ✓' : 'Reserve'}
+                      </Button>
+                    </div>
                   </div>
-                  <h4 className="font-bold text-gray-900 text-lg mb-1">{item.name}</h4>
-                  <p className="text-gray-500 text-sm mb-4">{item.duration} rental</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-gray-900">{item.price}</span>
-                    <Button 
-                      onClick={() => handleReserveEquipment(item)}
-                      disabled={isReserved}
-                      className={`rounded-xl px-5 shadow-lg transition-all duration-300 active:scale-95 ${
-                        isReserved 
-                          ? 'bg-gradient-to-r from-purple-400 to-violet-400 text-white cursor-default ring-2 ring-purple-300 ring-offset-2'
-                          : 'bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white shadow-indigo-500/25 hover:-translate-y-0.5'
-                      }`}
-                    >
-                      {isReserved ? 'Reserved ✓' : 'Reserve'}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                </ScrollReveal>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </ScrollReveal>
     </section>
   );
 };
