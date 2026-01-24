@@ -1,4 +1,5 @@
 import { Zap, Armchair, Compass, Users } from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
 
 const benefits = [
   {
@@ -25,41 +26,41 @@ const benefits = [
 
 const BenefitsSection = () => {
   return (
-    <section className="section-padding bg-secondary">
-      <div className="container-wide">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-4 block">
-            Benefits
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">
-            Everything you need to thrive
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            DeskAway is designed around the four pillars of remote work success.
-          </p>
-        </div>
+    <section className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-secondary">
+      <div className="max-w-6xl mx-auto">
+        <ScrollReveal>
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+              Benefits
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+              Everything you need to thrive
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              DeskAway is designed around the four pillars of remote work success.
+            </p>
+          </div>
+        </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
           {benefits.map((benefit, index) => (
-            <div
-              key={benefit.title}
-              className="bg-card rounded-3xl p-8 shadow-soft card-hover animate-fade-in-up"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="flex items-start gap-6">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <benefit.icon className="w-7 h-7 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-display font-semibold text-foreground mb-3">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {benefit.description}
-                  </p>
+            <ScrollReveal key={benefit.title} delay={index * 0.08}>
+              <div className="bg-card rounded-2xl p-6 shadow-soft card-hover h-full">
+                <div className="flex items-start gap-5">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <benefit.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-semibold text-foreground mb-2">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed text-sm">
+                      {benefit.description}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Wifi, Monitor, Users } from "lucide-react";
 import heroImage from "@/assets/hero-lombok.jpg";
@@ -17,29 +18,49 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container-wide px-6 lg:px-12 py-16 lg:py-24">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 container-wide px-6 lg:px-12 py-12 lg:py-20">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
           {/* Left Column - Text */}
-          <div className="max-w-2xl animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 backdrop-blur-sm mb-6">
+          <div className="max-w-2xl">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.4, 0.25, 1] }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/80 backdrop-blur-sm mb-5"
+            >
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-sm font-medium text-foreground">Now open in Lombok, Indonesia</span>
-            </div>
+            </motion.div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground leading-tight mb-6">
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: [0.25, 0.4, 0.25, 1] }}
+              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-foreground leading-tight mb-5"
+            >
               Work anywhere.
               <br />
               <span className="text-primary">Stay productive.</span>
               <br />
               Enjoy the journey.
-            </h1>
+            </motion.h1>
 
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.4, 0.25, 1] }}
+              className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-7 max-w-lg"
+            >
               Curated workation stays with guaranteed fast WiFi, ergonomic setups, and a community of remote professionals. Because your productivity shouldn't take a vacation.
-            </p>
+            </motion.p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
+              className="flex flex-col sm:flex-row gap-3 mb-10"
+            >
               <Button variant="hero" size="xl" className="group">
                 Explore Properties
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -47,10 +68,15 @@ const HeroSection = () => {
               <Button variant="heroOutline" size="xl">
                 Join the Waitlist
               </Button>
-            </div>
+            </motion.div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.25, ease: [0.25, 0.4, 0.25, 1] }}
+              className="flex flex-wrap gap-5 text-sm text-muted-foreground"
+            >
               <div className="flex items-center gap-2">
                 <Wifi className="w-4 h-4 text-primary" />
                 <span>100+ Mbps guaranteed</span>
@@ -63,12 +89,17 @@ const HeroSection = () => {
                 <Users className="w-4 h-4 text-primary" />
                 <span>Remote community</span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column - Workspace Image */}
           <div className="hidden lg:block">
-            <div className="relative animate-fade-in" style={{ animationDelay: "0.3s" }}>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+              className="relative"
+            >
               <div className="rounded-3xl overflow-hidden shadow-elevated">
                 <img
                   src={workspaceImage}
@@ -76,7 +107,7 @@ const HeroSection = () => {
                   className="w-full h-auto object-cover"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

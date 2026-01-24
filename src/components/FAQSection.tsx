@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ScrollReveal from "./ScrollReveal";
 
 const faqs = [
   {
@@ -23,8 +24,8 @@ const faqs = [
     answer: "DeskAway is perfect for: remote employees who need reliable work setups, freelancers who can work from anywhere, entrepreneurs looking for focused productivity, and anyone who values both travel and doing great work. We're NOT for: vacation-first travelers who'll rarely work, large groups or families with young children, or anyone looking for party hostels.",
   },
   {
-    question: "What's included in the price?",
-    answer: "All prices include: accommodation, dedicated workspace, high-speed WiFi, utilities, weekly cleaning, community access, and basic concierge support. Some properties include additional perks like pools, gyms, or coworking space access. Prices don't include: flights, food, personal excursions, or travel insurance. We're transparent — no hidden fees or surprise charges.",
+    question: "How does pricing work?",
+    answer: "Pricing varies by destination and property type. All prices include accommodation, dedicated workspace, high-speed WiFi, utilities, weekly cleaning, community access, and basic concierge support. Some properties include additional perks like pools, gyms, or coworking space access. We're transparent — no hidden fees or surprise charges.",
   },
   {
     question: "Can I extend my stay?",
@@ -34,38 +35,42 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="section-padding bg-muted">
-      <div className="container-tight">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-4 block">
-            FAQ
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">
-            Common questions
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Everything you need to know about working from DeskAway.
-          </p>
-        </div>
+    <section id="faq" className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-muted">
+      <div className="max-w-5xl mx-auto">
+        <ScrollReveal>
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
+              FAQ
+            </span>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
+              Common questions
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Everything you need to know about working from DeskAway.
+            </p>
+          </div>
+        </ScrollReveal>
 
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="bg-card rounded-2xl px-6 shadow-soft border-none"
-              >
-                <AccordionTrigger className="text-left text-lg font-display font-semibold text-foreground hover:no-underline py-6">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground leading-relaxed pb-6">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
+        <ScrollReveal delay={0.1}>
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="bg-card rounded-xl px-5 shadow-soft border-none"
+                >
+                  <AccordionTrigger className="text-left font-display font-semibold text-foreground hover:no-underline py-5">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground leading-relaxed pb-5 text-sm">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
