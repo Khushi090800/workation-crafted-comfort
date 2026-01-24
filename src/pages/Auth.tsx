@@ -66,16 +66,24 @@ const Auth = () => {
 
     try {
       if (isLogin) {
+        console.log('[Auth] Attempting login for:', email);
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
         if (error) {
+          console.error('[Auth] Login error:', error.message, error.status);
           if (error.message.includes('Invalid login credentials')) {
             toast({
               title: 'Login failed',
-              description: 'Invalid email or password. Please try again.',
+              description: 'Invalid email or password. Try a different email provider like Gmail?',
+              variant: 'destructive',
+            });
+          } else if (error.message.includes('Email not confirmed')) {
+            toast({
+              title: 'Email not confirmed',
+              description: 'Check your inbox for a confirmation email, or try signing up again.',
               variant: 'destructive',
             });
           } else {
@@ -86,15 +94,17 @@ const Auth = () => {
             });
           }
         } else {
+          console.log('[Auth] Login successful');
           toast({
             title: 'Welcome back!',
             description: 'You have successfully logged in.',
           });
         }
       } else {
+        console.log('[Auth] Attempting signup for:', email);
         const redirectUrl = `${window.location.origin}/dashboard`;
         
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -106,12 +116,34 @@ const Auth = () => {
         });
 
         if (error) {
-          if (error.message.includes('already registered')) {
+          console.error('[Auth] Signup error:', error.message, error.status);
+          if (error.message.includes('already registered') || error.message.includes('already been registered')) {
+            // Try to log in instead
             toast({
               title: 'Account exists',
-              description: 'This email is already registered. Please log in instead.',
-              variant: 'destructive',
+              description: 'Trying to log you in instead...',
             });
+            
+            const { error: loginError } = await supabase.auth.signInWithPassword({
+              email,
+              password,
+            });
+            
+            if (loginError) {
+              console.error('[Auth] Auto-login failed:', loginError.message);
+              toast({
+                title: 'Login required',
+                description: 'This email is registered. Please use the correct password or reset it.',
+                variant: 'destructive',
+              });
+              setIsLogin(true);
+            } else {
+              console.log('[Auth] Auto-login successful');
+              toast({
+                title: 'Welcome back!',
+                description: 'Logged in with your existing account.',
+              });
+            }
           } else {
             toast({
               title: 'Sign up failed',
@@ -120,13 +152,23 @@ const Auth = () => {
             });
           }
         } else {
-          toast({
-            title: 'Account created!',
-            description: 'You can now access your dashboard.',
-          });
+          console.log('[Auth] Signup successful, user:', data.user?.email);
+          // With auto-confirm enabled, user should be logged in immediately
+          if (data.session) {
+            toast({
+              title: 'Account created!',
+              description: 'Welcome to DeskAway! Redirecting to dashboard...',
+            });
+          } else {
+            toast({
+              title: 'Account created!',
+              description: 'You can now access your dashboard.',
+            });
+          }
         }
       }
     } catch (error) {
+      console.error('[Auth] Unexpected error:', error);
       toast({
         title: 'Error',
         description: 'An unexpected error occurred. Please try again.',
