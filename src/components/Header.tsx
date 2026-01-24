@@ -1,12 +1,23 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast.success("Logged out successfully");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Failed to log out");
+    }
+  };
 
   const navLinks = [
     { label: "Properties", href: "#properties" },
@@ -46,12 +57,30 @@ const Header = () => {
             )}
           </nav>
 
-          {/* Desktop CTAs */}
+          {/* Desktop CTAs + Auth Status */}
           <div className="hidden lg:flex items-center gap-4">
             {!loading && user ? (
-              <Button variant="hero" size="default" asChild>
-                <Link to="/dashboard">Go to Dashboard</Link>
-              </Button>
+              <>
+                {/* Auth Status Badge */}
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+                  <User className="w-3.5 h-3.5 text-primary" />
+                  <span className="text-xs font-medium text-primary truncate max-w-[140px]">
+                    {user.email}
+                  </span>
+                </div>
+                <Button variant="hero" size="default" asChild>
+                  <Link to="/dashboard">Dashboard</Link>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleLogout}
+                  className="text-muted-foreground hover:text-destructive"
+                >
+                  <LogOut className="w-4 h-4 mr-1" />
+                  Logout
+                </Button>
+              </>
             ) : (
               <>
                 <Button variant="ghost" size="sm" asChild>
@@ -100,9 +129,26 @@ const Header = () => {
               )}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
                 {!loading && user ? (
-                  <Button variant="hero" asChild>
-                    <Link to="/dashboard">Go to Dashboard</Link>
-                  </Button>
+                  <>
+                    {/* Mobile Auth Status Badge */}
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 mb-2">
+                      <User className="w-4 h-4 text-primary" />
+                      <span className="text-sm font-medium text-primary truncate">
+                        {user.email}
+                      </span>
+                    </div>
+                    <Button variant="hero" asChild>
+                      <Link to="/dashboard">Go to Dashboard</Link>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      onClick={handleLogout}
+                      className="justify-start text-muted-foreground hover:text-destructive"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </>
                 ) : (
                   <>
                     <Button variant="ghost" className="justify-start" asChild>
