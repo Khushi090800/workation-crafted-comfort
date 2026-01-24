@@ -47,7 +47,7 @@ const Header = () => {
               </a>
             ))}
             {/* Dashboard link - only show when logged in */}
-            {!loading && user && (
+            {user && (
               <Link
                 to="/dashboard"
                 className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
@@ -59,7 +59,7 @@ const Header = () => {
 
           {/* Desktop CTAs + Auth Status */}
           <div className="hidden lg:flex items-center gap-4">
-            {!loading && user ? (
+            {user ? (
               <>
                 {/* Auth Status Badge */}
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
@@ -68,9 +68,11 @@ const Header = () => {
                     {user.email}
                   </span>
                 </div>
-                <Button variant="hero" size="default" asChild>
-                  <Link to="/dashboard">Dashboard</Link>
-                </Button>
+                <Link to="/dashboard">
+                  <Button variant="hero" size="default">
+                    Dashboard
+                  </Button>
+                </Link>
                 <Button 
                   variant="ghost" 
                   size="sm" 
@@ -88,11 +90,11 @@ const Header = () => {
                     Sign In
                   </Button>
                 </Link>
-                <Button variant="hero" size="default" onClick={() => {
-                  document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
-                }}>
-                  Join Waitlist
-                </Button>
+                <a href="#waitlist">
+                  <Button variant="hero" size="default">
+                    Join Waitlist
+                  </Button>
+                </a>
               </>
             )}
           </div>
@@ -122,7 +124,7 @@ const Header = () => {
                 </a>
               ))}
               {/* Dashboard link - only show when logged in */}
-              {!loading && user && (
+              {user && (
                 <Link
                   to="/dashboard"
                   className="text-base font-medium text-primary hover:text-primary/80 transition-colors"
@@ -132,7 +134,7 @@ const Header = () => {
                 </Link>
               )}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                {!loading && user ? (
+                {user ? (
                   <>
                     {/* Mobile Auth Status Badge */}
                     <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 mb-2">
@@ -141,9 +143,11 @@ const Header = () => {
                         {user.email}
                       </span>
                     </div>
-                    <Button variant="hero" asChild>
-                      <Link to="/dashboard">Go to Dashboard</Link>
-                    </Button>
+                    <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="hero" className="w-full">
+                        Go to Dashboard
+                      </Button>
+                    </Link>
                     <Button 
                       variant="ghost" 
                       onClick={handleLogout}
@@ -155,17 +159,16 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <Link to="/auth">
+                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
                       <Button variant="ghost" className="justify-start w-full">
                         Sign In
                       </Button>
                     </Link>
-                    <Button variant="hero" onClick={() => {
-                      setIsMenuOpen(false);
-                      document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
-                    }}>
-                      Join Waitlist
-                    </Button>
+                    <a href="#waitlist" onClick={() => setIsMenuOpen(false)}>
+                      <Button variant="hero" className="w-full">
+                        Join Waitlist
+                      </Button>
+                    </a>
                   </>
                 )}
               </div>
