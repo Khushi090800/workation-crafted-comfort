@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import ScrollReveal from "./ScrollReveal";
+import { supabase } from "@/integrations/supabase/client";
 
 const WEBHOOK_URL = "https://farhandifedrizal.app.n8n.cloud/webhook/waitlist-signup";
 
@@ -81,7 +82,29 @@ const WaitlistSection = () => {
     try {
       const selectedDest = destinations.find(d => d.id === selectedDestination);
       
-      await fetch(WEBHOOK_URL, {
+      // Save to database
+      const { error: dbError } = await supabase.from("waitlist").insert({
+        full_name: result.data.fullName,
+        email: result.data.email,
+        destination: selectedDest?.name || selectedDestination,
+        wants_updates: result.data.wantsUpdates,
+        source: "destination-waitlist",
+      });
+
+      if (dbError) {
+        // Check if it's a duplicate email error
+        if (dbError.code === "23505") {
+          toast.error("You're already on the waitlist!", {
+            description: "We'll notify you when your destination is ready.",
+          });
+          setIsLoading(false);
+          return;
+        }
+        console.error("Database error:", dbError);
+      }
+
+      // Also send to webhook (fire and forget)
+      fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +119,7 @@ const WaitlistSection = () => {
           source: "destination-waitlist",
           timestamp: new Date().toISOString(),
         }),
-      });
+      }).catch(() => {}); // Ignore webhook errors
 
       setSubmitted(true);
       toast.success("You're on the list!", {
