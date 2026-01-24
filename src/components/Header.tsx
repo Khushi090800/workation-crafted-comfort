@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, loading } = useAuth();
 
   const navLinks = [
     { label: "Properties", href: "#properties" },
@@ -32,16 +35,33 @@ const Header = () => {
                 {link.label}
               </a>
             ))}
+            {/* Dashboard link - only show when logged in */}
+            {!loading && user && (
+              <Link
+                to="/dashboard"
+                className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+              >
+                Dashboard
+              </Link>
+            )}
           </nav>
 
           {/* Desktop CTAs */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="ghost" size="sm">
-              Sign In
-            </Button>
-            <Button variant="hero" size="default">
-              Join Waitlist
-            </Button>
+            {!loading && user ? (
+              <Button variant="hero" size="default" asChild>
+                <Link to="/dashboard">Go to Dashboard</Link>
+              </Button>
+            ) : (
+              <>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link to="/auth">Sign In</Link>
+                </Button>
+                <Button variant="hero" size="default">
+                  Join Waitlist
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -68,13 +88,31 @@ const Header = () => {
                   {link.label}
                 </a>
               ))}
+              {/* Dashboard link - only show when logged in */}
+              {!loading && user && (
+                <Link
+                  to="/dashboard"
+                  className="text-base font-medium text-primary hover:text-primary/80 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              )}
               <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                <Button variant="ghost" className="justify-start">
-                  Sign In
-                </Button>
-                <Button variant="hero">
-                  Join Waitlist
-                </Button>
+                {!loading && user ? (
+                  <Button variant="hero" asChild>
+                    <Link to="/dashboard">Go to Dashboard</Link>
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="ghost" className="justify-start" asChild>
+                      <Link to="/auth">Sign In</Link>
+                    </Button>
+                    <Button variant="hero">
+                      Join Waitlist
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>
