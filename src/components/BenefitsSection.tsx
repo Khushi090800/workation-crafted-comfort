@@ -1,29 +1,25 @@
-import { Zap, Heart, Brain, Users } from "lucide-react";
+import { Zap, Armchair, Compass, Users } from "lucide-react";
 
 const benefits = [
   {
     icon: Zap,
-    title: "Peak Productivity",
+    title: "Productivity-first workspaces",
     description: "Enterprise-grade WiFi, proper lighting, and distraction-free environments ensure you deliver your best work.",
-    stats: "98% meeting success rate",
   },
   {
-    icon: Heart,
-    title: "Physical Well-being",
+    icon: Armchair,
+    title: "Physical wellbeing",
     description: "Ergonomic chairs and adjustable desks prevent the aches that come from improvised setups.",
-    stats: "0 complaints about seating",
   },
   {
-    icon: Brain,
-    title: "Mental Clarity",
-    description: "Less planning, less stress. Everything's taken care of so you can focus on what matters.",
-    stats: "4x less planning time",
+    icon: Compass,
+    title: "Curated travel experiences",
+    description: "Thoughtfully selected destinations and local partnerships help you explore with purpose, not stress.",
   },
   {
     icon: Users,
-    title: "Built-in Community",
-    description: "Connect with like-minded remote professionals. Network, collaborate, or just grab dinner together.",
-    stats: "50+ community members",
+    title: "Built-in remote work community",
+    description: "Connect with like-minded professionals. Network, collaborate, or just grab dinner together.",
   },
 ];
 
@@ -43,7 +39,7 @@ const BenefitsSection = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {benefits.map((benefit, index) => (
             <div
               key={benefit.title}
@@ -58,12 +54,9 @@ const BenefitsSection = () => {
                   <h3 className="text-xl font-display font-semibold text-foreground mb-3">
                     {benefit.title}
                   </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {benefit.description}
                   </p>
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 text-accent text-sm font-medium">
-                    {benefit.stats}
-                  </span>
                 </div>
               </div>
             </div>
