@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wifi, Monitor, Users } from "lucide-react";
+import { ArrowRight, Wifi, Monitor, Users, LogIn } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 import heroImage from "@/assets/hero-lombok.jpg";
 import workspaceImage from "@/assets/workspace-interior.jpg";
 
 const HeroSection = () => {
+  const { user, loading } = useAuth();
+
   return (
     <section className="relative min-h-screen flex items-center pt-20 lg:pt-0 overflow-hidden">
       {/* Background Image */}
@@ -68,6 +72,15 @@ const HeroSection = () => {
               <Button variant="heroOutline" size="xl">
                 Join the Waitlist
               </Button>
+              {/* Login to Dashboard CTA - only show when NOT logged in */}
+              {!loading && !user && (
+                <Button variant="ghost" size="xl" asChild className="text-primary hover:text-primary/80">
+                  <Link to="/auth">
+                    <LogIn className="w-5 h-5 mr-2" />
+                    Login to Dashboard
+                  </Link>
+                </Button>
+              )}
             </motion.div>
 
             {/* Trust Indicators */}
