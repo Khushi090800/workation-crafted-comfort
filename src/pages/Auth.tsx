@@ -268,8 +268,14 @@ const Auth = () => {
                 type="submit"
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                 disabled={loading}
+                onClick={() => console.log('[Auth] Button clicked, loading:', loading)}
               >
-                {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Create Account'}
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                    Please wait...
+                  </span>
+                ) : isLogin ? 'Sign In' : 'Create Account'}
               </Button>
             </form>
 
