@@ -11,8 +11,11 @@ import {
 } from '@/components/ui/select';
 import { 
   MapPin, Clock, Briefcase, Dumbbell, Heart, 
-  Palette, Utensils, Mountain, Compass, Sparkles
+  Palette, Utensils, Mountain, Compass, Sparkles, Check
 } from 'lucide-react';
+import { useDashboardState } from '@/hooks/useDashboardState';
+import { toast } from 'sonner';
+import confetti from 'canvas-confetti';
 
 // Activity data from the provided JSON
 const activitiesData = [
@@ -52,10 +55,45 @@ const typeColors: Record<string, string> = {
   Tour: 'from-cyan-500 to-blue-500',
 };
 
+const triggerVolcanoConfetti = () => {
+  const duration = 2000;
+  const end = Date.now() + duration;
+
+  const frame = () => {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ['#8b5cf6', '#a855f7', '#d946ef'],
+    });
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ['#8b5cf6', '#a855f7', '#d946ef'],
+    });
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  };
+
+  frame();
+};
+
 const ModuleC = () => {
   const [timeFilter, setTimeFilter] = useState<string>('all');
   const [activeTypeFilters, setActiveTypeFilters] = useState<string[]>([]);
   const [activeDistanceFilters, setActiveDistanceFilters] = useState<string[]>([]);
+  
+  const { 
+    bookActivity, 
+    isActivityBooked, 
+    bookVolcanoTrek, 
+    bookings 
+  } = useDashboardState();
 
   const toggleFilter = (filter: string, activeFilters: string[], setFilters: (f: string[]) => void) => {
     if (activeFilters.includes(filter)) {
@@ -82,16 +120,33 @@ const ModuleC = () => {
     });
   }, [timeFilter, activeTypeFilters, activeDistanceFilters]);
 
+  const handleBookActivity = (activity: typeof activitiesData[0]) => {
+    if (isActivityBooked(activity.id)) return;
+    bookActivity(activity.id);
+    toast.success(`${activity.name} booked!`, {
+      description: activity.price === 'Free' ? 'Free experience' : `Price: ${activity.price}`,
+    });
+  };
+
+  const handleBookVolcanoTrek = () => {
+    if (bookings.volcanoTrekBooked) return;
+    bookVolcanoTrek();
+    triggerVolcanoConfetti();
+    toast.success('Volcano Trek booked!', {
+      description: 'Full-day adventure to Mount Rinjani • $50',
+    });
+  };
+
   return (
     <section className="space-y-10">
       {/* Section Header */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-rose-100 to-orange-100 border border-rose-200/50">
           <Compass className="w-4 h-4 text-orange-500" />
-          <span className="text-sm font-medium text-orange-700">Module C</span>
+          <span className="text-sm font-medium text-orange-700">Leisure & Discovery</span>
         </div>
         <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900">
-          Leisure & Discovery
+          Leisure & Lombok
         </h2>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Explore curated experiences that blend adventure with tranquility
@@ -124,7 +179,7 @@ const ModuleC = () => {
               <button
                 key={filter}
                 onClick={() => toggleFilter(filter, activeTypeFilters, setActiveTypeFilters)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 active:scale-95 ${
                   activeTypeFilters.includes(filter) 
                     ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/25' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -142,7 +197,7 @@ const ModuleC = () => {
               <button
                 key={filter}
                 onClick={() => toggleFilter(filter, activeDistanceFilters, setActiveDistanceFilters)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 active:scale-95 ${
                   activeDistanceFilters.includes(filter) 
                     ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/25' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
@@ -160,6 +215,7 @@ const ModuleC = () => {
         {filteredActivities.map(activity => {
           const IconComponent = typeIcons[activity.activity_type] || Compass;
           const gradientColor = typeColors[activity.activity_type] || 'from-gray-500 to-gray-600';
+          const isBooked = isActivityBooked(activity.id);
           
           return (
             <Card 
@@ -168,8 +224,16 @@ const ModuleC = () => {
             >
               <CardContent className="p-6">
                 <div className="flex items-start gap-4 mb-4">
-                  <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${gradientColor} flex items-center justify-center shadow-lg flex-shrink-0`}>
-                    <IconComponent className="w-6 h-6 text-white" />
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 transition-all duration-300 ${
+                    isBooked 
+                      ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
+                      : `bg-gradient-to-br ${gradientColor}`
+                  }`}>
+                    {isBooked ? (
+                      <Check className="w-6 h-6 text-white" />
+                    ) : (
+                      <IconComponent className="w-6 h-6 text-white" />
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="font-bold text-gray-900 text-lg">{activity.name}</h4>
@@ -198,13 +262,18 @@ const ModuleC = () => {
                     {activity.price}
                   </span>
                   <Button 
-                    variant={activity.price === 'Free' ? 'outline' : 'default'}
-                    className={activity.price === 'Free' 
-                      ? 'rounded-xl border-orange-200 text-orange-600 hover:bg-orange-50' 
-                      : 'rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/25'
-                    }
+                    onClick={() => handleBookActivity(activity)}
+                    disabled={isBooked}
+                    variant={activity.price === 'Free' && !isBooked ? 'outline' : 'default'}
+                    className={`rounded-xl transition-all duration-300 active:scale-95 ${
+                      isBooked
+                        ? 'bg-gradient-to-r from-emerald-400 to-teal-400 text-white cursor-default ring-2 ring-emerald-300 ring-offset-2'
+                        : activity.price === 'Free' 
+                          ? 'border-orange-200 text-orange-600 hover:bg-orange-50' 
+                          : 'bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-lg shadow-orange-500/25 hover:-translate-y-0.5'
+                    }`}
                   >
-                    {activity.price === 'Free' ? 'Explore' : 'Book Now'}
+                    {isBooked ? 'Booked ✓' : activity.price === 'Free' ? 'Explore' : 'Book Now'}
                   </Button>
                 </div>
               </CardContent>
@@ -214,26 +283,51 @@ const ModuleC = () => {
       </div>
 
       {/* Marketplace Hero - Volcano Trek */}
-      <Card className="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 rounded-3xl shadow-2xl overflow-hidden">
+      <Card className={`rounded-3xl shadow-2xl overflow-hidden transition-all duration-500 ${
+        bookings.volcanoTrekBooked 
+          ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600'
+          : 'bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600'
+      }`}>
         <CardContent className="p-8 md:p-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <Mountain className="w-8 h-8 text-white" />
+              <div className={`w-16 h-16 rounded-2xl backdrop-blur-sm flex items-center justify-center transition-all duration-300 ${
+                bookings.volcanoTrekBooked ? 'bg-white/30' : 'bg-white/20'
+              }`}>
+                {bookings.volcanoTrekBooked ? (
+                  <Check className="w-8 h-8 text-white" />
+                ) : (
+                  <Mountain className="w-8 h-8 text-white" />
+                )}
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1">
                   <Sparkles className="w-4 h-4 text-amber-300" />
-                  <span className="text-sm text-purple-200 font-medium">Premium Experience</span>
+                  <span className={`text-sm font-medium ${bookings.volcanoTrekBooked ? 'text-emerald-200' : 'text-purple-200'}`}>
+                    {bookings.volcanoTrekBooked ? 'Adventure Confirmed!' : 'Premium Experience'}
+                  </span>
                 </div>
                 <h4 className="text-2xl font-display font-bold text-white">Volcano Trek Adventure</h4>
-                <p className="text-purple-200">Full-day guided trek to Mount Rinjani with stunning views</p>
+                <p className={bookings.volcanoTrekBooked ? 'text-emerald-200' : 'text-purple-200'}>
+                  {bookings.volcanoTrekBooked 
+                    ? 'Your guide will contact you with details'
+                    : 'Full-day guided trek to Mount Rinjani with stunning views'
+                  }
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-3xl font-bold text-white">$50</span>
-              <Button className="bg-white text-purple-600 hover:bg-purple-50 rounded-xl px-8 py-6 text-lg font-semibold shadow-xl transition-all duration-300 hover:-translate-y-1">
-                Book Volcano Trek
+              <Button 
+                onClick={handleBookVolcanoTrek}
+                disabled={bookings.volcanoTrekBooked}
+                className={`rounded-xl px-8 py-6 text-lg font-semibold shadow-xl transition-all duration-300 active:scale-95 ${
+                  bookings.volcanoTrekBooked
+                    ? 'bg-white/30 text-white cursor-default ring-2 ring-white/50'
+                    : 'bg-white text-purple-600 hover:bg-purple-50 hover:-translate-y-1'
+                }`}
+              >
+                {bookings.volcanoTrekBooked ? 'Booked ✓' : 'Book Volcano Trek'}
               </Button>
             </div>
           </div>

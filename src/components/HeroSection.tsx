@@ -1,13 +1,30 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wifi, Monitor, Users, LogIn } from "lucide-react";
+import { ArrowRight, Wifi, Monitor, Users, LogIn, CheckCircle } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 import heroImage from "@/assets/hero-lombok.jpg";
 import workspaceImage from "@/assets/workspace-interior.jpg";
 
 const HeroSection = () => {
   const { user, loading } = useAuth();
+  const [isReserved, setIsReserved] = useState(false);
+
+  const handleExploreClick = () => {
+    if (isReserved) return;
+    setIsReserved(true);
+    toast.success("Spots reserved!", {
+      description: "Check your dashboard for details.",
+    });
+  };
+
+  const handleWaitlistClick = () => {
+    toast.success("You're on the waitlist!", {
+      description: "We'll notify you when new locations open.",
+    });
+  };
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 lg:pt-0 overflow-hidden">
@@ -65,11 +82,35 @@ const HeroSection = () => {
               transition={{ duration: 0.5, delay: 0.2, ease: [0.25, 0.4, 0.25, 1] }}
               className="flex flex-col sm:flex-row gap-3 mb-10"
             >
-              <Button variant="hero" size="xl" className="group">
-                Explore Properties
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <Button 
+                variant="hero" 
+                size="xl" 
+                onClick={handleExploreClick}
+                disabled={isReserved}
+                className={`group transition-all duration-300 active:scale-95 ${
+                  isReserved 
+                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 ring-2 ring-emerald-300 ring-offset-2' 
+                    : ''
+                }`}
+              >
+                {isReserved ? (
+                  <>
+                    <CheckCircle className="w-5 h-5 mr-2" />
+                    Spots Reserved!
+                  </>
+                ) : (
+                  <>
+                    Explore Properties
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </>
+                )}
               </Button>
-              <Button variant="heroOutline" size="xl">
+              <Button 
+                variant="heroOutline" 
+                size="xl"
+                onClick={handleWaitlistClick}
+                className="transition-all duration-300 active:scale-95"
+              >
                 Join the Waitlist
               </Button>
               {/* Login to Dashboard CTA - only show when NOT logged in */}
