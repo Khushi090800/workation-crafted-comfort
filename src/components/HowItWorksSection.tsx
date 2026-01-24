@@ -34,7 +34,7 @@ const HowItWorksSection = () => {
     <section id="how-it-works" className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-background">
       <div className="max-w-5xl mx-auto">
         <ScrollReveal>
-          <div className="text-center max-w-2xl mx-auto mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
               How It Works
             </span>
@@ -45,31 +45,31 @@ const HowItWorksSection = () => {
         </ScrollReveal>
 
         {/* Vertical Timeline */}
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-xl mx-auto">
           <div className="relative">
             {/* Vertical Line */}
-            <div className="absolute left-7 top-0 bottom-0 w-px bg-border hidden md:block" />
+            <div className="absolute left-[22px] top-0 bottom-0 w-px bg-border hidden sm:block" />
 
-            <div className="space-y-10">
+            <div className="space-y-6">
               {steps.map((step, index) => (
-                <ScrollReveal key={step.title} delay={index * 0.1}>
-                  <div className="relative flex items-start gap-6">
+                <ScrollReveal key={step.title} delay={index * 0.08}>
+                  <div className="relative flex items-start gap-5">
                     {/* Icon with Number */}
                     <div className="relative z-10 flex-shrink-0">
-                      <div className="w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center">
-                        <step.icon className="w-6 h-6 text-primary" />
+                      <div className="icon-container bg-secondary">
+                        <step.icon className="w-5 h-5 text-primary" />
                       </div>
-                      <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                      <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
                         {index + 1}
                       </span>
                     </div>
 
                     {/* Content */}
-                    <div className="pt-1">
-                      <h3 className="text-lg font-display font-semibold text-foreground mb-2">
+                    <div className="pt-0.5 min-w-0">
+                      <h3 className="text-base font-display font-semibold text-foreground mb-1">
                         {step.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed text-sm max-w-md">
+                      <p className="text-muted-foreground leading-relaxed text-sm">
                         {step.description}
                       </p>
                     </div>

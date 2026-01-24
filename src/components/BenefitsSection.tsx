@@ -27,7 +27,7 @@ const benefits = [
 const BenefitsSection = () => {
   return (
     <section className="py-14 md:py-18 px-6 md:px-8 lg:px-12 bg-secondary">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <ScrollReveal>
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
@@ -42,16 +42,16 @@ const BenefitsSection = () => {
           </div>
         </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
           {benefits.map((benefit, index) => (
             <ScrollReveal key={benefit.title} delay={index * 0.08}>
-              <div className="bg-card rounded-2xl p-6 shadow-soft card-hover h-full">
-                <div className="flex items-start gap-5">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <benefit.icon className="w-6 h-6 text-primary" />
+              <div className="card-base card-hover card-padding-lg h-full">
+                <div className="flex items-start gap-4">
+                  <div className="icon-container bg-primary/10">
+                    <benefit.icon className="w-5 h-5 text-primary" />
                   </div>
-                  <div>
-                    <h3 className="text-lg font-display font-semibold text-foreground mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base font-display font-semibold text-foreground mb-2">
                       {benefit.title}
                     </h3>
                     <p className="text-muted-foreground leading-relaxed text-sm">

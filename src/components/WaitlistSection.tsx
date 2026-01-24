@@ -13,7 +13,7 @@ const destinations = [
     country: "Indonesia",
     status: "Available soon",
     descriptor: "Tropical, quiet, productivity-first",
-    image: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?w=600&h=450&fit=crop&q=80",
   },
   {
     id: "bali",
@@ -21,7 +21,7 @@ const destinations = [
     country: "Indonesia",
     status: "Coming next",
     descriptor: "Creative hub, vibrant community",
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&h=450&fit=crop&q=80",
   },
   {
     id: "lisbon",
@@ -29,7 +29,7 @@ const destinations = [
     country: "Portugal",
     status: "Planned",
     descriptor: "European charm, mild climate",
-    image: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&h=450&fit=crop&q=80",
   },
   {
     id: "medellin",
@@ -37,7 +37,7 @@ const destinations = [
     country: "Colombia",
     status: "Planned",
     descriptor: "Spring-like weather, growing scene",
-    image: "https://images.unsplash.com/photo-1558029137-a8a3d6d0f4a0?w=400&h=300&fit=crop",
+    image: "https://images.unsplash.com/photo-1583531352515-8884af319dc1?w=600&h=450&fit=crop&q=80",
   },
 ];
 
@@ -81,22 +81,20 @@ const WaitlistSection = () => {
 
         {!submitted ? (
           <>
-            {/* Destination Cards */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            {/* Destination Cards - Uniform grid */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
               {destinations.map((destination, index) => (
                 <ScrollReveal key={destination.id} delay={index * 0.08}>
-                  <motion.button
+                  <button
                     onClick={() => setSelectedDestination(destination.id)}
-                    whileHover={{ scale: 1.015 }}
-                    whileTap={{ scale: 0.99 }}
-                    className={`group relative rounded-2xl overflow-hidden text-left transition-all duration-300 w-full ${
+                    className={`group relative rounded-xl overflow-hidden text-left w-full transition-shadow duration-300 ${
                       selectedDestination === destination.id
-                        ? "ring-2 ring-primary ring-offset-2 ring-offset-secondary"
-                        : ""
+                        ? "ring-2 ring-primary ring-offset-2 ring-offset-secondary shadow-card"
+                        : "shadow-soft hover:shadow-card"
                     }`}
                   >
-                    {/* Image */}
-                    <div className="aspect-[4/3] overflow-hidden">
+                    {/* Image - Fixed aspect ratio */}
+                    <div className="aspect-destination overflow-hidden">
                       <img
                         src={destination.image}
                         alt={`${destination.name}, ${destination.country}`}
@@ -105,12 +103,12 @@ const WaitlistSection = () => {
                     </div>
 
                     {/* Content Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/20 to-transparent" />
                     
                     {/* Content */}
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-background/20 backdrop-blur-sm text-background">
+                    <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] sm:text-xs font-medium px-2 py-0.5 rounded-lg bg-background/20 backdrop-blur-sm text-background">
                           {destination.status}
                         </span>
                         {selectedDestination === destination.id && (
@@ -119,19 +117,19 @@ const WaitlistSection = () => {
                           </span>
                         )}
                       </div>
-                      <h3 className="text-base font-display font-semibold text-background mb-0.5">
+                      <h3 className="text-sm sm:text-base font-display font-semibold text-background leading-tight">
                         {destination.name}, {destination.country}
                       </h3>
-                      <p className="text-xs text-background/80">
+                      <p className="text-[10px] sm:text-xs text-background/80 mt-0.5 leading-tight">
                         {destination.descriptor}
                       </p>
                     </div>
-                  </motion.button>
+                  </button>
                 </ScrollReveal>
               ))}
             </div>
 
-            {/* Waitlist Form - Appears after selection */}
+            {/* Waitlist Form */}
             <AnimatePresence>
               {selectedDestination && (
                 <motion.div
@@ -139,9 +137,9 @@ const WaitlistSection = () => {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.4, ease: [0.25, 0.4, 0.25, 1] }}
-                  className="max-w-lg mx-auto overflow-hidden"
+                  className="max-w-md mx-auto overflow-hidden"
                 >
-                  <div className="bg-card rounded-3xl p-7 shadow-soft">
+                  <div className="card-base card-padding-lg">
                     <div className="text-center mb-5">
                       <p className="text-sm text-muted-foreground mb-1">Selected destination</p>
                       <p className="font-display font-semibold text-foreground">
@@ -213,7 +211,7 @@ const WaitlistSection = () => {
           </>
         ) : (
           <ScrollReveal>
-            <div className="max-w-md mx-auto bg-card rounded-3xl p-8 shadow-soft text-center">
+            <div className="max-w-md mx-auto card-base card-padding-lg text-center">
               <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
               <h3 className="text-xl font-display font-semibold text-foreground mb-2">
                 You're on the list!
