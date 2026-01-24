@@ -1,7 +1,24 @@
-import { MapPin, Mail, Instagram, Linkedin, Twitter } from "lucide-react";
+import { useState } from "react";
+import { MapPin, Mail, Instagram, Linkedin, Twitter, CheckCircle, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
+  const handleNewsletterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    
+    setIsSubscribed(true);
+    toast.success("You're on the list!", {
+      description: "We'll send updates about new destinations and features.",
+    });
+    setEmail("");
+  };
 
   const footerLinks = {
     product: [
@@ -36,6 +53,37 @@ const Footer = () => {
             <p className="text-primary-foreground/70 leading-relaxed mb-6 max-w-sm">
               Work anywhere. Stay productive. Enjoy the journey. Premium workation stays designed for remote professionals.
             </p>
+            
+            {/* Newsletter Form */}
+            <div className="mb-6">
+              <p className="text-sm font-medium text-primary-foreground mb-3">
+                Get updates on new destinations
+              </p>
+              {isSubscribed ? (
+                <div className="flex items-center gap-2 text-emerald-400 bg-emerald-500/10 px-4 py-3 rounded-xl">
+                  <CheckCircle className="w-5 h-5" />
+                  <span className="font-medium">Subscribed! Check your inbox.</span>
+                </div>
+              ) : (
+                <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+                  <Input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/50 rounded-xl"
+                    required
+                  />
+                  <Button 
+                    type="submit"
+                    className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white rounded-xl px-4 transition-all duration-300 active:scale-95"
+                  >
+                    <Send className="w-4 h-4" />
+                  </Button>
+                </form>
+              )}
+            </div>
+
             <div className="flex items-center gap-2 text-primary-foreground/70 mb-4">
               <MapPin className="w-4 h-4" />
               <span>Starting in Lombok, Indonesia</span>

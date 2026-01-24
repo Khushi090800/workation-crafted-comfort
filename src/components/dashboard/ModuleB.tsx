@@ -1,28 +1,24 @@
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { 
   Activity, Battery, Wifi, Monitor, Keyboard, 
-  Armchair, Zap, CheckCircle2
+  Armchair, Zap, CheckCircle2, Check
 } from 'lucide-react';
 import { 
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, 
-  CartesianGrid, Area, AreaChart
+  ResponsiveContainer, CartesianGrid, Area, AreaChart, XAxis, YAxis, Tooltip
 } from 'recharts';
+import { useDashboardState } from '@/hooks/useDashboardState';
+import { toast } from 'sonner';
 
-// Mock heartbeat data - smooth ping between 18-22ms
-const heartbeatData = Array.from({ length: 24 }, (_, i) => ({
-  hour: `${i}:00`,
-  ping: 18 + Math.sin(i / 3) * 2 + Math.random() * 2,
-  speed: 145 + Math.sin(i / 4) * 5 + Math.random() * 5,
-}));
-
-// Status indicators
-const statusItems = [
-  { label: 'Main Grid', status: 'OK', icon: Activity, color: 'emerald' },
-  { label: 'Battery', status: '85%', icon: Battery, color: 'amber' },
-  { label: 'ISP Speed', status: '150Mbps', icon: Wifi, color: 'emerald' },
-];
+// Generate initial heartbeat data
+const generateHeartbeatData = () => 
+  Array.from({ length: 24 }, (_, i) => ({
+    hour: `${i}:00`,
+    ping: 18 + Math.sin(i / 3) * 2 + Math.random() * 2,
+    speed: 145 + Math.sin(i / 4) * 5 + Math.random() * 5,
+  }));
 
 // Equipment marketplace
 const equipmentItems = [
@@ -56,13 +52,64 @@ const equipmentItems = [
 ];
 
 const ModuleB = () => {
+  const { reserveEquipment, isEquipmentReserved } = useDashboardState();
+  const [heartbeatData, setHeartbeatData] = useState(generateHeartbeatData);
+  const [batteryLevel, setBatteryLevel] = useState(85);
+  const [currentPing, setCurrentPing] = useState(20);
+
+  // Auto-update chart data every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHeartbeatData(prev => {
+        const newData = [...prev.slice(1)];
+        const lastHour = parseInt(prev[prev.length - 1].hour);
+        newData.push({
+          hour: `${(lastHour + 1) % 24}:00`,
+          ping: 18 + Math.sin((lastHour + 1) / 3) * 2 + Math.random() * 2,
+          speed: 145 + Math.sin((lastHour + 1) / 4) * 5 + Math.random() * 5,
+        });
+        setCurrentPing(Math.round(newData[newData.length - 1].ping));
+        return newData;
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animate battery level
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBatteryLevel(prev => {
+        const change = Math.random() > 0.5 ? 1 : -1;
+        return Math.min(100, Math.max(70, prev + change));
+      });
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleReserveEquipment = (equipment: typeof equipmentItems[0]) => {
+    if (isEquipmentReserved(equipment.id)) return;
+    reserveEquipment(equipment.id);
+    toast.success(`${equipment.name} reserved!`, {
+      description: `${equipment.duration} rental • ${equipment.price}`,
+    });
+  };
+
+  // Status indicators with animated battery
+  const statusItems = [
+    { label: 'Main Grid', status: 'OK', icon: Activity, color: 'emerald' },
+    { label: 'Battery', status: `${batteryLevel}%`, icon: Battery, color: 'amber' },
+    { label: 'ISP Speed', status: '150Mbps', icon: Wifi, color: 'emerald' },
+  ];
+
   return (
     <section className="space-y-10">
       {/* Section Header */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-100 to-indigo-100 border border-blue-200/50">
           <Zap className="w-4 h-4 text-indigo-500" />
-          <span className="text-sm font-medium text-indigo-700">Module B</span>
+          <span className="text-sm font-medium text-indigo-700">Workplace Suite</span>
         </div>
         <h2 className="text-4xl md:text-5xl font-display font-bold text-gray-900">
           Workspace Excellence
@@ -84,7 +131,7 @@ const ModuleB = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="text-2xl font-bold text-gray-900">20ms</p>
+                  <p className="text-2xl font-bold text-gray-900 transition-all duration-300">{currentPing}ms</p>
                   <p className="text-sm text-gray-500">Average Ping</p>
                 </div>
                 <Badge className="bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 border-0 px-3 py-1">
@@ -131,6 +178,8 @@ const ModuleB = () => {
                       strokeWidth={2}
                       fill="url(#pingGradient)"
                       name="Ping (ms)"
+                      isAnimationActive={true}
+                      animationDuration={500}
                     />
                   </AreaChart>
                 </ResponsiveContainer>
@@ -151,14 +200,14 @@ const ModuleB = () => {
                 {statusItems.map((item) => (
                   <div 
                     key={item.label}
-                    className={`flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r ${
+                    className={`flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r transition-all duration-500 ${
                       item.color === 'emerald' 
                         ? 'from-emerald-50 to-teal-50 border border-emerald-100' 
                         : 'from-amber-50 to-orange-50 border border-amber-100'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                         item.color === 'emerald' 
                           ? 'bg-gradient-to-br from-emerald-500 to-teal-500' 
                           : 'bg-gradient-to-br from-amber-500 to-orange-500'
@@ -167,7 +216,7 @@ const ModuleB = () => {
                       </div>
                       <span className="font-medium text-gray-800">{item.label}</span>
                     </div>
-                    <span className={`font-bold ${
+                    <span className={`font-bold transition-all duration-300 ${
                       item.color === 'emerald' ? 'text-emerald-600' : 'text-amber-600'
                     }`}>
                       {item.status}
@@ -187,26 +236,45 @@ const ModuleB = () => {
           Equipment Marketplace
         </h3>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {equipmentItems.map((item) => (
-            <Card 
-              key={item.id} 
-              className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
-            >
-              <CardContent className="p-6">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center mb-4 shadow-lg`}>
-                  <item.icon className="w-8 h-8 text-white" />
-                </div>
-                <h4 className="font-bold text-gray-900 text-lg mb-1">{item.name}</h4>
-                <p className="text-gray-500 text-sm mb-4">{item.duration} rental</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-2xl font-bold text-gray-900">{item.price}</span>
-                  <Button className="bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white rounded-xl px-5 shadow-lg shadow-indigo-500/25 transition-all duration-300">
-                    Reserve
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {equipmentItems.map((item) => {
+            const isReserved = isEquipmentReserved(item.id);
+            return (
+              <Card 
+                key={item.id} 
+                className="bg-white/80 backdrop-blur-sm border-white/50 rounded-3xl shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden"
+              >
+                <CardContent className="p-6">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-lg transition-all duration-300 ${
+                    isReserved 
+                      ? 'bg-gradient-to-br from-purple-500 to-violet-600' 
+                      : `bg-gradient-to-br ${item.gradient}`
+                  }`}>
+                    {isReserved ? (
+                      <Check className="w-8 h-8 text-white" />
+                    ) : (
+                      <item.icon className="w-8 h-8 text-white" />
+                    )}
+                  </div>
+                  <h4 className="font-bold text-gray-900 text-lg mb-1">{item.name}</h4>
+                  <p className="text-gray-500 text-sm mb-4">{item.duration} rental</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-bold text-gray-900">{item.price}</span>
+                    <Button 
+                      onClick={() => handleReserveEquipment(item)}
+                      disabled={isReserved}
+                      className={`rounded-xl px-5 shadow-lg transition-all duration-300 active:scale-95 ${
+                        isReserved 
+                          ? 'bg-gradient-to-r from-purple-400 to-violet-400 text-white cursor-default ring-2 ring-purple-300 ring-offset-2'
+                          : 'bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 text-white shadow-indigo-500/25 hover:-translate-y-0.5'
+                      }`}
+                    >
+                      {isReserved ? 'Reserved ✓' : 'Reserve'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     </section>
