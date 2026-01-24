@@ -32,6 +32,7 @@ const ScrollReveal = ({
         ease: [0.25, 0.4, 0.25, 1],
       }}
       className={className}
+      style={{ pointerEvents: 'auto' }}
     >
       {children}
     </motion.div>
