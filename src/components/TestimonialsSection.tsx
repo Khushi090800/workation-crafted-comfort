@@ -39,7 +39,7 @@ const TestimonialsSection = () => {
       <div className="container-wide">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-sm font-medium text-accent uppercase tracking-wider mb-4 block">
-            Social Proof
+            Testimonials
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-6">
             Trusted by remote professionals
@@ -100,26 +100,6 @@ const TestimonialsSection = () => {
                 {company}
               </span>
             ))}
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-border">
-          <div className="text-center">
-            <p className="text-4xl font-display font-bold text-foreground mb-2">98%</p>
-            <p className="text-sm text-muted-foreground">Meeting success rate</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-display font-bold text-foreground mb-2">0h</p>
-            <p className="text-sm text-muted-foreground">WiFi downtime</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-display font-bold text-foreground mb-2">150+</p>
-            <p className="text-sm text-muted-foreground">Happy guests</p>
-          </div>
-          <div className="text-center">
-            <p className="text-4xl font-display font-bold text-foreground mb-2">4.9★</p>
-            <p className="text-sm text-muted-foreground">Average rating</p>
           </div>
         </div>
       </div>

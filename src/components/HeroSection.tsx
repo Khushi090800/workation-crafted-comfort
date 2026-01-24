@@ -76,18 +76,6 @@ const HeroSection = () => {
                   className="w-full h-auto object-cover"
                 />
               </div>
-              {/* Floating Stats Card */}
-              <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl p-5 shadow-card">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <Wifi className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-bold text-foreground">98%</p>
-                    <p className="text-sm text-muted-foreground">Meeting success rate</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
