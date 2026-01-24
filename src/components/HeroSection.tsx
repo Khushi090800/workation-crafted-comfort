@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wifi, Monitor, Users, LogIn, CheckCircle } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { ArrowRight, Wifi, Monitor, Users, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import heroImage from "@/assets/hero-lombok.jpg";
 import workspaceImage from "@/assets/workspace-interior.jpg";
 
 const HeroSection = () => {
-  const { user, loading } = useAuth();
   const [isReserved, setIsReserved] = useState(false);
 
   const handleExploreClick = () => {
@@ -113,15 +110,6 @@ const HeroSection = () => {
               >
                 Join the Waitlist
               </Button>
-              {/* Login to Dashboard CTA - only show when NOT logged in */}
-              {!loading && !user && (
-                <Button variant="ghost" size="xl" asChild className="text-primary hover:text-primary/80">
-                  <Link to="/auth">
-                    <LogIn className="w-5 h-5 mr-2" />
-                    Login to Dashboard
-                  </Link>
-                </Button>
-              )}
             </motion.div>
 
             {/* Trust Indicators */}
