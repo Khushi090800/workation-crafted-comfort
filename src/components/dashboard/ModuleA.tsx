@@ -1,46 +1,50 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
   Calendar, Users, Bike, Plane, Phone, Shirt, 
-  CheckCircle2, Clock, Check
+  CheckCircle2, Clock, Check, Palmtree, Waves
 } from 'lucide-react';
 import { useDashboardState } from '@/hooks/useDashboardState';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 import ScrollReveal from '@/components/ScrollReveal';
+import { motion } from 'framer-motion';
+import beachDinnerImg from '@/assets/beach-dinner.jpg';
+import scooterFieldsImg from '@/assets/scooter-fields.jpg';
 
 // Weekly Events Data
 const weeklyEvents = [
   {
     id: 1,
-    title: 'Tuesday Nomad Dinner',
+    title: 'Sunset Feast with the Tribe',
+    subtitle: 'Tuesday Nomad Dinner',
     date: 'Jan 27',
     time: '7:00 PM',
-    icon: Users,
+    tagline: 'Stories, seafood & new friends under the stars',
   },
   {
     id: 2,
-    title: 'Friday Sunrise Surf',
+    title: 'Dawn Patrol',
+    subtitle: 'Friday Sunrise Surf',
     date: 'Jan 30',
     time: '6:00 AM',
-    icon: Calendar,
+    tagline: 'Catch waves before your first call',
   },
 ];
 
 // Logistics Services
 const logisticsServices = [
-  { id: 1, label: 'Laundry', price: '$5', icon: Shirt },
-  { id: 2, label: 'Bike Rental', price: '$10/day', icon: Bike },
-  { id: 3, label: 'Airport Transfer', price: '$25', icon: Plane },
-  { id: 4, label: 'Local SIM', price: '$15', icon: Phone },
+  { id: 1, label: 'Laundry', price: '$5', tagline: 'Fresh & folded by sunset', icon: Shirt },
+  { id: 2, label: 'Island Wheels', price: '$10/day', tagline: 'Freedom awaits', icon: Bike },
+  { id: 3, label: 'Airport Magic', price: '$25', tagline: 'Seamless arrivals', icon: Plane },
+  { id: 4, label: 'Stay Connected', price: '$15', tagline: 'Local SIM, sorted', icon: Phone },
 ];
 
 const triggerConfetti = () => {
   confetti({
-    particleCount: 80,
-    spread: 60,
-    origin: { y: 0.7 },
-    colors: ['#10b981', '#34d399', '#6ee7b7', '#fbbf24', '#f59e0b'],
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#0d9488', '#f59e0b', '#f97316', '#06b6d4', '#fbbf24'],
   });
 };
 
@@ -57,16 +61,16 @@ const ModuleA = () => {
     if (isEventConfirmed(event.id)) return;
     confirmEvent(event.id);
     triggerConfetti();
-    toast.success(`Attendance confirmed for ${event.title}!`, {
-      description: `See you on ${event.date} at ${event.time}`,
+    toast.success(`You're in! 🌴`, {
+      description: `See you ${event.date} at ${event.time}`,
     });
   };
 
   const handleBookLogistic = (service: typeof logisticsServices[0]) => {
     if (isLogisticBooked(service.id)) return;
     bookLogistic(service.id);
-    toast.success(`${service.label} booked successfully!`, {
-      description: `Charge: ${service.price}`,
+    toast.success(`${service.label} sorted! 🛵`, {
+      description: service.tagline,
     });
   };
 
@@ -74,160 +78,191 @@ const ModuleA = () => {
 
   return (
     <section className="max-w-5xl mx-auto">
-      {/* Section Header - Landing style */}
+      {/* Section Header - Tropical vibe */}
       <ScrollReveal>
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-sm font-medium text-accent uppercase tracking-wider mb-3 block">
-            Operations & Community
-          </span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 mb-4">
+            <Palmtree className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">Island Life</span>
+          </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-foreground mb-4">
             Crafted Experiences
           </h2>
-          <p className="text-lg text-muted-foreground">
-            Curated gatherings and seamless logistics for your workation journey.
+          <p className="text-lg text-muted-foreground italic">
+            "The best stories start with 'Remember that night in Lombok...'"
           </p>
         </div>
       </ScrollReveal>
 
       {/* Two Column Layout */}
-      <div className="grid lg:grid-cols-2 gap-4 mb-10">
-        {/* Left: Intentional Gatherings */}
-        <div className="space-y-4">
-          <ScrollReveal delay={0.1}>
-            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
-              <div className="icon-container-sm bg-primary/10">
-                <Users className="w-4 h-4 text-primary" />
+      <div className="grid lg:grid-cols-2 gap-6 mb-10">
+        {/* Left: Events with Beach Dinner Background */}
+        <ScrollReveal delay={0.1}>
+          <div className="relative rounded-2xl overflow-hidden group">
+            {/* Background Image */}
+            <img 
+              src={beachDinnerImg} 
+              alt="Beach dinner setting" 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/50 to-foreground/30" />
+            
+            {/* Content */}
+            <div className="relative z-10 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+                  <Users className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-display font-semibold text-background">Sunset Gatherings</h3>
+                  <p className="text-sm text-background/70">Where nomads become family</p>
+                </div>
               </div>
-              Intentional Gatherings
-            </h3>
-          </ScrollReveal>
-          <div className="space-y-4">
-            {weeklyEvents.map((event, index) => {
-              const isConfirmed = isEventConfirmed(event.id);
-              return (
-                <ScrollReveal key={event.id} delay={0.1 + index * 0.08}>
-                  <div className="card-base card-hover card-padding-lg">
-                    <div className="flex items-start gap-4">
-                      <div className="icon-container bg-primary/10">
-                        <event.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-display font-semibold text-foreground text-base">{event.title}</h4>
-                        <p className="text-muted-foreground text-sm">{event.date} • {event.time}</p>
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={() => handleConfirmEvent(event)}
-                      disabled={isConfirmed}
-                      variant={isConfirmed ? "default" : "hero"}
-                      size="lg"
-                      className={`w-full mt-5 ${
-                        isConfirmed 
-                          ? 'bg-accent/20 text-accent hover:bg-accent/20 cursor-default' 
-                          : ''
-                      }`}
-                    >
-                      {isConfirmed ? (
-                        <>
-                          <Check className="w-5 h-5 mr-2" />
-                          Attending ✓
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle2 className="w-5 h-5 mr-2" />
-                          Confirm Attendance
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </ScrollReveal>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Right: Logistics */}
-        <div className="space-y-4">
-          <ScrollReveal delay={0.2}>
-            <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
-              <div className="icon-container-sm bg-primary/10">
-                <Bike className="w-4 h-4 text-primary" />
-              </div>
-              Seamless Logistics
-            </h3>
-          </ScrollReveal>
-          <ScrollReveal delay={0.24}>
-            <div className="card-base card-padding-lg">
-              <div className="grid grid-cols-2 gap-3">
-                {logisticsServices.map((service) => {
-                  const isBooked = isLogisticBooked(service.id);
+              
+              <div className="space-y-4">
+                {weeklyEvents.map((event) => {
+                  const isConfirmed = isEventConfirmed(event.id);
                   return (
-                    <Button
-                      key={service.id}
-                      variant="outline"
-                      onClick={() => handleBookLogistic(service)}
-                      disabled={isBooked}
-                      className={`h-auto py-4 px-4 flex flex-col items-center gap-3 rounded-xl transition-all duration-200 ${
-                        isBooked
-                          ? 'bg-accent/10 border-accent/30 cursor-default'
-                          : 'bg-secondary border-border hover:bg-secondary/80 hover:-translate-y-0.5 hover:shadow-card'
-                      }`}
+                    <motion.div 
+                      key={event.id}
+                      className="bg-background/90 backdrop-blur-sm rounded-xl p-4 shadow-elevated"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      <div className={`icon-container-sm ${
-                        isBooked ? 'bg-accent/20' : 'bg-primary'
-                      }`}>
-                        {isBooked ? (
-                          <Check className="w-4 h-4 text-accent" />
-                        ) : (
-                          <service.icon className="w-4 h-4 text-primary-foreground" />
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h4 className="font-display font-semibold text-foreground">{event.title}</h4>
+                          <p className="text-sm text-muted-foreground">{event.date} • {event.time}</p>
+                        </div>
+                        {isConfirmed && (
+                          <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
+                            <Palmtree className="w-4 h-4 text-accent" />
+                          </div>
                         )}
                       </div>
-                      <div className="text-center">
-                        <span className={`block font-medium text-sm ${isBooked ? 'text-accent' : 'text-foreground'}`}>
-                          {isBooked ? 'Booked ✓' : service.label}
-                        </span>
-                        <span className={`text-xs font-semibold ${isBooked ? 'text-accent/70' : 'text-primary'}`}>
-                          {service.price}
-                        </span>
-                      </div>
-                    </Button>
+                      <p className="text-sm text-muted-foreground italic mb-3">"{event.tagline}"</p>
+                      <Button 
+                        onClick={() => handleConfirmEvent(event)}
+                        disabled={isConfirmed}
+                        variant={isConfirmed ? "default" : "hero"}
+                        size="default"
+                        className={`w-full ${isConfirmed ? 'bg-accent/20 text-accent hover:bg-accent/20' : ''}`}
+                      >
+                        {isConfirmed ? (
+                          <>
+                            <Palmtree className="w-4 h-4 mr-2" />
+                            I'm in! See you there ✨
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            Count me in
+                          </>
+                        )}
+                      </Button>
+                    </motion.div>
                   );
                 })}
               </div>
             </div>
-          </ScrollReveal>
-        </div>
+          </div>
+        </ScrollReveal>
+
+        {/* Right: Logistics with Scooter Background */}
+        <ScrollReveal delay={0.2}>
+          <div className="relative rounded-2xl overflow-hidden group">
+            {/* Background Image */}
+            <img 
+              src={scooterFieldsImg} 
+              alt="Scooter on rice fields" 
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-foreground/50 to-foreground/30" />
+            
+            {/* Content */}
+            <div className="relative z-10 p-6 md:p-8">
+              <div className="flex items-center gap-2 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-primary/20 backdrop-blur-sm flex items-center justify-center">
+                  <Bike className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-display font-semibold text-background">Island Essentials</h3>
+                  <p className="text-sm text-background/70">Life, simplified</p>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                {logisticsServices.map((service) => {
+                  const isBooked = isLogisticBooked(service.id);
+                  return (
+                    <motion.button
+                      key={service.id}
+                      onClick={() => handleBookLogistic(service)}
+                      disabled={isBooked}
+                      className={`bg-background/90 backdrop-blur-sm rounded-xl p-4 text-left transition-all ${
+                        isBooked ? 'opacity-90' : 'hover:bg-background hover:shadow-elevated'
+                      }`}
+                      whileHover={{ scale: isBooked ? 1 : 1.03 }}
+                      whileTap={{ scale: isBooked ? 1 : 0.98 }}
+                    >
+                      <div className={`w-10 h-10 rounded-xl mb-3 flex items-center justify-center ${
+                        isBooked ? 'bg-accent/20' : 'bg-primary'
+                      }`}>
+                        {isBooked ? (
+                          <Palmtree className="w-5 h-5 text-accent" />
+                        ) : (
+                          <service.icon className="w-5 h-5 text-primary-foreground" />
+                        )}
+                      </div>
+                      <p className={`font-medium text-sm ${isBooked ? 'text-accent' : 'text-foreground'}`}>
+                        {isBooked ? 'Sorted! ✨' : service.label}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{service.price}</p>
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
 
       {/* Timeline: Your Journey */}
       <ScrollReveal delay={0.3}>
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-base font-display font-semibold text-foreground flex items-center gap-2 mb-4">
-            <div className="icon-container-sm bg-accent/10">
-              <Clock className="w-4 h-4 text-accent" />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+              <Waves className="w-5 h-5 text-accent" />
             </div>
-            Your Journey
-          </h3>
-          <div className="card-base card-padding-lg">
+            <div>
+              <h3 className="text-lg font-display font-semibold text-foreground">Your Island Story</h3>
+              <p className="text-sm text-muted-foreground italic">"Every adventure starts with a yes"</p>
+            </div>
+          </div>
+          
+          <div className="card-base card-padding-lg relative overflow-hidden">
+            {/* Decorative palm shadow */}
+            <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
+              <Palmtree className="w-full h-full text-foreground" />
+            </div>
+            
             <div className="relative">
               {/* Timeline Line */}
-              <div className="absolute left-[11px] top-3 bottom-3 w-0.5 bg-accent/30 rounded-full" />
+              <div className="absolute left-[11px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-accent via-primary to-accent/30 rounded-full" />
               
               <div className="space-y-5">
                 {timelineItems.map((item) => (
                   <div key={item.id} className="flex gap-5 relative animate-fade-in">
-                    {/* Dot */}
                     <div className="relative z-10">
-                      <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center shadow-lg ${
                         item.status === 'confirmed' 
                           ? 'bg-accent' 
                           : 'bg-primary'
                       }`}>
-                        <div className="w-2 h-2 bg-background rounded-full" />
+                        <Palmtree className="w-3 h-3 text-background" />
                       </div>
                     </div>
                     
-                    {/* Content */}
                     <div className="flex-1 pb-1">
                       <div className="flex items-center gap-3 mb-1">
                         <span className="font-display font-semibold text-foreground">{item.title}</span>
@@ -236,11 +271,11 @@ const ModuleA = () => {
                             ? 'bg-accent/10 text-accent' 
                             : 'bg-primary/10 text-primary'
                         }`}>
-                          {item.status === 'confirmed' ? 'Confirmed' : 'Active'}
+                          {item.status === 'confirmed' ? '✨ Confirmed' : '🌴 Active'}
                         </span>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-0.5">{item.time}</p>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                      <p className="text-sm text-muted-foreground">{item.time}</p>
+                      <p className="text-sm text-muted-foreground italic">"{item.description}"</p>
                     </div>
                   </div>
                 ))}
