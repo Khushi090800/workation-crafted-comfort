@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Wifi, Monitor, Users } from "lucide-react";
-import { toast } from "sonner";
+import heroVideo from "@/assets/hero-video.mp4";
 import heroImage from "@/assets/hero-lombok.jpg";
 import workspaceImage from "@/assets/workspace-interior.jpg";
 
@@ -22,13 +22,18 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center pt-20 lg:pt-0 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Video with Image Fallback */}
       <div className="absolute inset-0 z-0">
-        <img
-          src={heroImage}
-          alt="Beautiful Lombok beach with palm trees and Mount Rinjani"
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={heroImage}
           className="w-full h-full object-cover"
-        />
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/40" />
       </div>
 
