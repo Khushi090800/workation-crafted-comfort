@@ -130,11 +130,11 @@ const HeroSection = () => {
               transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
               className="relative"
             >
-              <div className="rounded-3xl overflow-hidden shadow-elevated">
+              <div className="rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm p-1 border border-white/20 shadow-2xl">
                 <img
                   src={workspaceImage}
                   alt="Premium workspace with ocean view"
-                  className="w-full h-auto object-cover"
+                  className="w-full h-auto object-cover rounded-xl"
                 />
               </div>
             </motion.div>
