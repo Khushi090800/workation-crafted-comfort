@@ -14,9 +14,10 @@ const HeroSection = () => {
   };
 
   const handleWaitlistClick = () => {
-    toast.success("You're on the waitlist!", {
-      description: "We'll notify you when new locations open.",
-    });
+    const waitlistSection = document.getElementById("waitlist");
+    if (waitlistSection) {
+      waitlistSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
