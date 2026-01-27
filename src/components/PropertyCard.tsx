@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Wifi, Monitor, Volume2, Armchair } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import PropertyDetailsDialog from "./PropertyDetailsDialog";
 
 interface PropertyCardProps {
   image: string;
@@ -22,6 +24,9 @@ const PropertyCard = ({
   quietRating,
   priceFrom,
 }: PropertyCardProps) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const property = { image, title, location, wifiSpeed, deskType, chairType, quietRating, priceFrom };
   return (
     <div className="card-base card-hover overflow-hidden group h-full flex flex-col">
       {/* Image - Fixed aspect ratio */}
@@ -68,11 +73,22 @@ const PropertyCard = ({
             <p className="text-xs text-muted-foreground">From</p>
             <p className="text-base font-semibold text-foreground">{priceFrom}<span className="text-xs font-normal text-muted-foreground">/week</span></p>
           </div>
-          <Button variant="default" size="sm" className="text-xs">
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="text-xs"
+            onClick={() => setIsDialogOpen(true)}
+          >
             View Details
           </Button>
         </div>
       </div>
+
+      <PropertyDetailsDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        property={property}
+      />
     </div>
   );
 };
