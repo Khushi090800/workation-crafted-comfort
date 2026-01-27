@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,6 +18,16 @@ const Header = () => {
       console.error("Logout error:", error);
       toast.error("Failed to log out");
     }
+  };
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMenuOpen(false);
   };
 
   const navLinks = [
@@ -40,6 +51,7 @@ const Header = () => {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
               >
                 {link.label}
@@ -89,7 +101,10 @@ const Header = () => {
                     Sign In
                   </Button>
                 </Link>
-                <a href="#waitlist">
+                <a 
+                  href="#waitlist"
+                  onClick={(e) => handleSmoothScroll(e, "#waitlist")}
+                >
                   <Button variant="hero" size="default">
                     Join Waitlist
                   </Button>
@@ -108,72 +123,97 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border">
-            <nav className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-              {/* Dashboard link - only show when logged in */}
-              {user && (
-                <Link
-                  to="/dashboard"
-                  className="text-base font-medium text-primary hover:text-primary/80 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Dashboard
-                </Link>
-              )}
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
-                {user ? (
-                  <>
-                    {/* Mobile Auth Status Badge */}
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 mb-2">
-                      <User className="w-4 h-4 text-primary" />
-                      <span className="text-sm font-medium text-primary truncate">
-                        {user.email}
-                      </span>
-                    </div>
-                    <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="hero" className="w-full">
-                        Go to Dashboard
-                      </Button>
-                    </Link>
-                    <Button 
-                      variant="ghost" 
-                      onClick={handleLogout}
-                      className="justify-start text-muted-foreground hover:text-destructive"
+        {/* Mobile Menu with Animation */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+              className="lg:hidden overflow-hidden border-t border-border"
+            >
+              <nav className="flex flex-col gap-2 py-4">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    key={link.label}
+                    href={link.href}
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.3 }}
+                    className="text-base font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 px-3 py-2.5 rounded-lg transition-all"
+                    onClick={(e) => handleSmoothScroll(e, link.href)}
+                  >
+                    {link.label}
+                  </motion.a>
+                ))}
+                {/* Dashboard link - only show when logged in */}
+                {user && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navLinks.length * 0.05, duration: 0.3 }}
+                  >
+                    <Link
+                      to="/dashboard"
+                      className="block text-base font-medium text-primary hover:text-primary/80 hover:bg-primary/5 px-3 py-2.5 rounded-lg transition-all"
+                      onClick={() => setIsMenuOpen(false)}
                     >
-                      <LogOut className="w-4 h-4 mr-2" />
-                      Logout
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="ghost" className="justify-start w-full">
-                        Sign In
-                      </Button>
+                      Dashboard
                     </Link>
-                    <a href="#waitlist" onClick={() => setIsMenuOpen(false)}>
-                      <Button variant="hero" className="w-full">
-                        Join Waitlist
-                      </Button>
-                    </a>
-                  </>
+                  </motion.div>
                 )}
-              </div>
-            </nav>
-          </div>
-        )}
+                <motion.div 
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.3 }}
+                  className="flex flex-col gap-2 pt-4 mt-2 border-t border-border"
+                >
+                  {user ? (
+                    <>
+                      {/* Mobile Auth Status Badge */}
+                      <div className="flex items-center gap-2 px-3 py-2.5 rounded-lg bg-primary/10 border border-primary/20 mb-2">
+                        <User className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-medium text-primary truncate">
+                          {user.email}
+                        </span>
+                      </div>
+                      <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="hero" className="w-full">
+                          Go to Dashboard
+                        </Button>
+                      </Link>
+                      <Button 
+                        variant="ghost" 
+                        onClick={handleLogout}
+                        className="justify-start text-muted-foreground hover:text-destructive"
+                      >
+                        <LogOut className="w-4 h-4 mr-2" />
+                        Logout
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Link to="/auth" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant="ghost" className="justify-start w-full">
+                          Sign In
+                        </Button>
+                      </Link>
+                      <a 
+                        href="#waitlist" 
+                        onClick={(e) => handleSmoothScroll(e, "#waitlist")}
+                      >
+                        <Button variant="hero" className="w-full">
+                          Join Waitlist
+                        </Button>
+                      </a>
+                    </>
+                  )}
+                </motion.div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );
