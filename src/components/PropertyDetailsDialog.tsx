@@ -28,112 +28,104 @@ const PropertyDetailsDialog = ({ open, onOpenChange, property }: PropertyDetails
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-display">{property.title}</DialogTitle>
-        </DialogHeader>
-        
-        {/* Property Image */}
-        <div className="aspect-video overflow-hidden rounded-lg">
+      <DialogContent className="sm:max-w-md p-0 gap-0 overflow-hidden">
+        {/* Property Image - Fixed height */}
+        <div className="relative w-full h-48 flex-shrink-0">
           <img
             src={property.image}
             alt={property.title}
             className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <h2 className="text-xl font-display font-semibold text-white">{property.title}</h2>
+            <div className="flex items-center gap-1.5 text-white/90 text-sm mt-1">
+              <MapPin className="w-3.5 h-3.5" />
+              <span>{property.location}</span>
+            </div>
+          </div>
         </div>
 
-        {/* Location */}
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <MapPin className="w-4 h-4 text-primary" />
-          <span>{property.location}</span>
-        </div>
+        {/* Content */}
+        <div className="p-5 space-y-4 overflow-y-auto max-h-[60vh]">
+          {/* Description */}
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Experience the perfect blend of work and paradise at {property.title}. 
+            This carefully curated space is designed for remote professionals seeking 
+            productivity without sacrificing the island lifestyle.
+          </p>
 
-        {/* Description */}
-        <p className="text-muted-foreground text-sm leading-relaxed">
-          Experience the perfect blend of work and paradise at {property.title}. 
-          This carefully curated space is designed for remote professionals seeking 
-          productivity without sacrificing the island lifestyle. Every detail has been 
-          considered to ensure you can focus on what matters.
-        </p>
-
-        {/* Specs Grid */}
-        <div className="grid grid-cols-2 gap-4 py-4 border-y border-border">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Wifi className="w-5 h-5 text-primary" />
+          {/* Specs Grid */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-2.5 p-3 rounded-lg bg-muted/50">
+              <Wifi className="w-4 h-4 text-primary flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">WiFi</p>
+                <p className="text-sm font-medium text-foreground truncate">{property.wifiSpeed}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">WiFi Speed</p>
-              <p className="font-medium text-foreground">{property.wifiSpeed}</p>
+            <div className="flex items-center gap-2.5 p-3 rounded-lg bg-muted/50">
+              <Monitor className="w-4 h-4 text-primary flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Desk</p>
+                <p className="text-sm font-medium text-foreground truncate">{property.deskType}</p>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Monitor className="w-5 h-5 text-primary" />
+            <div className="flex items-center gap-2.5 p-3 rounded-lg bg-muted/50">
+              <Armchair className="w-4 h-4 text-primary flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Chair</p>
+                <p className="text-sm font-medium text-foreground truncate">{property.chairType}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Desk Setup</p>
-              <p className="font-medium text-foreground">{property.deskType}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Armchair className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Chair</p>
-              <p className="font-medium text-foreground">{property.chairType}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <Volume2 className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Quiet Rating</p>
-              <div className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-3.5 h-3.5 ${
-                      i < property.quietRating
-                        ? "text-primary fill-primary"
-                        : "text-muted-foreground/30"
-                    }`}
-                  />
-                ))}
+            <div className="flex items-center gap-2.5 p-3 rounded-lg bg-muted/50">
+              <Volume2 className="w-4 h-4 text-primary flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Quiet</p>
+                <div className="flex items-center gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`w-3 h-3 ${
+                        i < property.quietRating
+                          ? "text-primary fill-primary"
+                          : "text-muted-foreground/30"
+                      }`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Amenities */}
-        <div>
-          <h4 className="font-medium text-foreground mb-2">Included Amenities</h4>
-          <div className="flex flex-wrap gap-2">
-            {["Air Conditioning", "Kitchen", "Fast WiFi", "Workspace", "Weekly Cleaning", "24/7 Support"].map((amenity) => (
-              <span
-                key={amenity}
-                className="px-3 py-1 bg-muted rounded-full text-xs text-muted-foreground"
-              >
-                {amenity}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* Price & CTA */}
-        <div className="flex items-center justify-between pt-4">
+          {/* Amenities */}
           <div>
-            <p className="text-sm text-muted-foreground">Starting from</p>
-            <p className="text-2xl font-semibold text-foreground">
-              {property.priceFrom}
-              <span className="text-sm font-normal text-muted-foreground">/week</span>
-            </p>
+            <h4 className="text-xs font-medium text-foreground uppercase tracking-wide mb-2">Amenities</h4>
+            <div className="flex flex-wrap gap-1.5">
+              {["Air Conditioning", "Kitchen", "Fast WiFi", "Workspace", "Weekly Cleaning", "24/7 Support"].map((amenity) => (
+                <span
+                  key={amenity}
+                  className="px-2.5 py-1 bg-muted rounded-full text-xs text-muted-foreground"
+                >
+                  {amenity}
+                </span>
+              ))}
+            </div>
           </div>
-          <Button onClick={handleJoinWaitlist} size="lg">
-            Join Waitlist
-          </Button>
+
+          {/* Price & CTA */}
+          <div className="flex items-center justify-between pt-3 border-t border-border">
+            <div>
+              <p className="text-xs text-muted-foreground">Starting from</p>
+              <p className="text-xl font-semibold text-foreground">
+                {property.priceFrom}
+                <span className="text-xs font-normal text-muted-foreground">/week</span>
+              </p>
+            </div>
+            <Button onClick={handleJoinWaitlist}>
+              Join Waitlist
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
