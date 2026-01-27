@@ -1,20 +1,16 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Wifi, Monitor, Users, CheckCircle } from "lucide-react";
+import { ArrowRight, Wifi, Monitor, Users } from "lucide-react";
 import { toast } from "sonner";
 import heroImage from "@/assets/hero-lombok.jpg";
 import workspaceImage from "@/assets/workspace-interior.jpg";
 
 const HeroSection = () => {
-  const [isReserved, setIsReserved] = useState(false);
-
   const handleExploreClick = () => {
-    if (isReserved) return;
-    setIsReserved(true);
-    toast.success("Spots reserved!", {
-      description: "Check your dashboard for details.",
-    });
+    const propertiesSection = document.getElementById("properties");
+    if (propertiesSection) {
+      propertiesSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const handleWaitlistClick = () => {
@@ -83,24 +79,10 @@ const HeroSection = () => {
                 variant="hero" 
                 size="xl" 
                 onClick={handleExploreClick}
-                disabled={isReserved}
-                className={`group transition-all duration-300 active:scale-95 ${
-                  isReserved 
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 ring-2 ring-emerald-300 ring-offset-2' 
-                    : ''
-                }`}
+                className="group transition-all duration-300 active:scale-95"
               >
-                {isReserved ? (
-                  <>
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    Spots Reserved!
-                  </>
-                ) : (
-                  <>
-                    Explore Properties
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                  </>
-                )}
+                Explore Properties
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button 
                 variant="heroOutline" 
