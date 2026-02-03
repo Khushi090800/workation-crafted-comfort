@@ -49,7 +49,7 @@ const destinations = [
     country: "Colombia",
     status: "Planned",
     descriptor: "Spring-like weather, growing scene",
-    image: "https://images.unsplash.com/photo-1599413987323-b2b8c0d7d9c8?w=600&h=450&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1568402102990-bc541580b59f?w=600&h=450&fit=crop&q=80",
   },
 ];
 
